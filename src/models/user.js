@@ -12,15 +12,23 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    dateOfBirth: {
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    birthday: {
       type: DataTypes.DATE,
       allowNull: true,
     },
     country: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    email: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -37,8 +45,10 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     image: {
-      type: DataTypes.STRING,
+      type: DataTypes.BLOB,
       allowNull: true,
     },
-  });
+  },
+  { timestamps: false }
+  );
 };
