@@ -12,7 +12,15 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    dateOfBirth: {
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    user: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    birthday: {
       type: DataTypes.DATE,
       allowNull: true,
     },
