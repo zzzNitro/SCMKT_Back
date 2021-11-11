@@ -5,7 +5,7 @@ const { User, Contract } = require('../db');
 const { v4: uuidv4 } = require('uuid');
 const { Op } = require('sequelize');
 
-router.get('/newUser', async function(req, res) {
+router.post('/newUser', async function(req, res) {
   const {name, last_name, username, email, birthday, country, password, wallet, image};
   let user = {
     name,
