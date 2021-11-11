@@ -40,10 +40,6 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING(130),
       allowNull: true,
     },
-    contract: {
-      type: DataTypes.STRING(130),
-      allowNull: true,
-    },
     image: {
       type: DataTypes.BLOB,
       allowNull: true,

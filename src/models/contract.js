@@ -17,11 +17,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     conditions: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    amount: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.JSON,
       allowNull: false,
     },
     status: {
