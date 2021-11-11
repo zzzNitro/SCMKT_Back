@@ -36,7 +36,8 @@ router.get('/', async function (req, res, next) {
         id: el.id,
         name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
         last_name: el.last_name,
-        username: el.username
+        username: el.username,
+        contract: el.Contracts
       }
       return obj;
     })
