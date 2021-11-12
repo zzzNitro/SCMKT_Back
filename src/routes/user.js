@@ -78,6 +78,33 @@ router.get('/:id', async function (req, res, next) {
   }
 });
 
+router.put('/edit/:id', async function (req, res, next){
+  const id = req.params.id;
+  const { name, last_name, username, email } = req.body;
+  
+  try {
+    let found = await User.findByPk(id)
+    let user = {
+      name: found.name.charAt(0).toUpperCase() + found.name.slice(1),
+      last_name: found.last_name,
+      username: found.username,
+      email: found.email
+    }
+    let updatedUser = await User.update({
+      name: `${ name ? name : user.name }`,
+      last_name: `${ last_name ? last_name : user.last_name }`,
+      username: `${ username ? username : user.username }`,
+      email: `${ email ? email : user.email }`,
+      },
+      {where: {id}}
+    )
+    res.send(updatedUser)
+  } catch(error){
+    res.send(error)
+  }
+});
+
+
 router.put('/delete/:id', async function (req, res, next){
   const id = req.params.id;
 
