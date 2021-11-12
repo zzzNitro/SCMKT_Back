@@ -47,6 +47,27 @@ router.get('/:id', async function (req, res, next) {
   }
 });
 
+router.put('/edit/:id', async function (req, res, next){
+  const id = req.params.id;
+  const { conditions, status } = req.body;
+  
+  try {
+    let found = await Contract.findByPk(id)
+    let contract = {
+      conditions: found.conditions,
+      status: found.status
+    }
+    let updatedContract = await Contract.update({
+      conditions: `${ conditions ? conditions : contract.conditions }`,
+      status: `${ status ? status : contract.status }`,
+      },
+      {where: {id}}
+    )
+    res.send(updatedContract)
+  } catch(error){
+    res.send(error)
+  }
+});
 
 
 module.exports = router;
