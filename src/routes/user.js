@@ -22,6 +22,61 @@ router.post('/newUser', async function(req, res) {
   User.create(user);
 });
 
+router.get('/login', async function (req, res, next) {
+  const { username, password } = req.body;
+
+  if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
+  try {
+    let found = await User.findAll({
+      where: {
+        [Op.and]: [
+          { username: username },
+          { password: password }
+        ]
+      },
+      include: {
+        model: Contract,
+        attributes: ['wallet1', 'wallet2', 'conditions'],
+      }
+    })
+
+    let user = found.map((el) => {
+      let obj = {
+        id: el.id,
+        name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
+        last_name: el.last_name,
+        username: el.username,
+        contract: el.Contracts
+      }
+      return obj;
+    })
+
+    return (user.length && res.json(user)) || next({ message: 'The username and password are not correct or the user does not exist', status: 500 })
+  } catch (error) {
+    return next({ message: error })
+  }
+});
+
+router.get('/:id', async function (req, res, next) {
+  const { id } = req.params;
+
+  try {
+    let found = await User.findByPk(id, { include: [Contract] })
+
+    let user = {
+      id: found.id,
+      name: found.name.charAt(0).toUpperCase() + found.name.slice(1),
+      last_name: found.last_name,
+      username: found.username,
+      contract: found.Contracts
+    }
+
+    return res.json(user);
+  } catch (error) {
+    return next({ message: error })
+  }
+});
+
 router.get('/', async function (req, res, next) {
   try {
     let found = await User.findAll({
@@ -44,28 +99,6 @@ router.get('/', async function (req, res, next) {
 
     return res.json([...users]);
   } catch(error) {
-    return next({ message: error })
-  }
-});
-
-router.get('/login', async function (req, res, next) {
-  const { username, password } = req.body;
-
-  if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
-  try {
-    let found = await User.findAll({
-      where: {
-        username: username,
-        password: password
-      },
-      include: {
-        model: Contract,
-        attributes: ['wallet1', 'wallet2', 'conditions'],
-      }
-    })
-
-    return (found.length > 0 && res.json(found)) || next({ message: 'The username and password are not correct or the user does not exist', status: 500 })
-  } catch (error) {
     return next({ message: error })
   }
 });
