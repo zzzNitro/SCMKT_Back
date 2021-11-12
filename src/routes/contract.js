@@ -69,5 +69,19 @@ router.put('/edit/:id', async function (req, res, next){
   }
 });
 
+router.put('/delete/:id', async function (req, res, next){
+  const id = req.params.id;
+
+  try {
+    await Contract.update(
+      {status: "deleted"},
+      {where: {id}}
+    )
+    return res.sendStatus(200)
+  } catch(error){
+    res.send(error)
+  }
+});
+
 
 module.exports = router;

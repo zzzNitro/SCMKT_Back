@@ -113,7 +113,7 @@ router.put('/delete/:id', async function (req, res, next){
       {status: "inactive"},
       {where: {id}}
     )
-    
+    return res.sendStatus(200)
   } catch(error){
     res.send(error)
   }
