@@ -46,6 +46,10 @@ module.exports = (sequelize) => {
       type: DataTypes.BLOB,
       allowNull: true,
     },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   { timestamps: false }
   );
