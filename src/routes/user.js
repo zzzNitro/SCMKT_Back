@@ -68,12 +68,27 @@ router.get('/:id', async function (req, res, next) {
       name: found.name.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
       username: found.username,
+      status: found.status,
       contract: found.Contracts
     }
 
     return res.json(user);
   } catch (error) {
     return next({ message: error })
+  }
+});
+
+router.put('/delete/:id', async function (req, res, next){
+  const id = req.params.id;
+
+  try {
+    User.update(
+      {status: "inactive"},
+      {where: {id}}
+    )
+    
+  } catch(error){
+    res.send(error)
   }
 });
 
@@ -92,6 +107,7 @@ router.get('/', async function (req, res, next) {
         name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
         last_name: el.last_name,
         username: el.username,
+        status: el.status,
         contract: el.Contracts
       }
       return obj;
