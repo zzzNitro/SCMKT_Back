@@ -8,6 +8,7 @@ const { Op } = require('sequelize');
 router.post('/newUser', async function(req, res) {
   const {name, last_name, username, email, birthday, country, password, wallet, image} = req.body;
   let user = {
+    id,
     name,
     last_name,
     username,
