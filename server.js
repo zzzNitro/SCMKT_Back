@@ -1,5 +1,6 @@
 const server = require('./src/app.js');
 const { User, Contract, conn } = require('./src/db.js');
+const axios = require('axios');
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(async () => {
@@ -18,6 +19,7 @@ conn.sync({ force: true }).then(async () => {
       { id: "fbcc828f-e372-4cf9-9851-11bfd4d037bb", name: "Jaclyn", last_name: "Bourgaize", username: "jbourgaize7", email: "jbourgaize7@ftc.gov", birthday: "07/01/1973", country: "Atbasar", password: "AFpY8KQgRc", wallet: "", image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAACzSURBVDjL7dI9C0FxHMXx8zruG2SSUjKgXwklw2WxSB4yGC2iDFyDpwj1T1LK00jq+hduOt6AwU02w1k/deoLkvhm+APvAVRpoEpBxVEoaoX8SZDbG24AkcWTrZ3D+ubByPBCmEv5HCjfVXPrMNq/0WdpZuaaSI3U50DhomrrG/2WpqdzZWJiE7G2CyB3lPDgTHOmGR/bDHUPRLDk4kJ2ZSA9FSR7CtJQCOQF3rjxL/FHwAu8X+2ABKJChQAAAABJRU5ErkJggg==" },
       { id: "010f8b83-3ffa-437b-b4d1-c4120a6c92c5", name: "Carlye", last_name: "Lelande", username: "clelande8", email: "clelande8@craigslist.org", birthday: "08/07/1998", country: "Judaydah", password: "JEJLdCpvW9M7", wallet: "", image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFhSURBVDjLpZMxbtZAEIW/N/bP7w4aSiQuQEODEFdIAVI6KFJwgeQenAEBFQVU1CBOkAsgroDSRMof77wUa68tK5GQstqVd1fz3rw345Vt7jN6gM8/zj9k6u3lIYer8ZaoTY5dD8OOj+9fPz/tAdJ6d/TqyeNhGCR1eMIkAMIGez6bMl7z/eefE6ASXF7lfr8f9OX3P0oxY2b9lmQspkznkibTnB0/paQEEACHESI6hKhTTa7mrepegsxNDWhyadAaLIQJCQssiAA3kxuCBpKRRMhkCBlCVW8a1p1rBPYCXjKKTrNRkOvCuougkkTULA4tHRQ4IVb1aQSeCJbMJlZgTdlTqsRwt4LqddUFJms2YWPfpsBugRFTRWffEkojs4CnH6sRaLoNQbImEWlXZV7L3xRx2OmCvH745sUj0Ozd89wMMY4H+k5uBA96ff326+/LQ/Gz/3mcfQe74FNt7T2f8w1Fi68/h3owMgAAAABJRU5ErkJggg==" }
     ]
+    //conditions: `${{"first":"url.com/archivo.txt"}}` ejemplo de intento de dummy data json
     await User.bulkCreate(users);
 
     const contracts = [
@@ -223,6 +225,7 @@ conn.sync({ force: true }).then(async () => {
 
     // idUser = await User.findByPk("010f8b83-3ffa-437b-b4d1-c4120a6c92c5");
     // await idUser.setContracts([]);
+    await Contract.bulkCreate(contracts)
   } catch (error) {
     console.log(error)
   }

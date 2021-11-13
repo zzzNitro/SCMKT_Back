@@ -7,6 +7,8 @@ module.exports = (sequelize) => {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
+      defaultValue: DataTypes.UUIDV1,
+      allowNull: false,
     },
     wallet1: {
       type: DataTypes.STRING,

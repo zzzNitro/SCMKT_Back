@@ -1,17 +1,19 @@
 const { Router } = require('express');
 const router = Router();
-const axios = require('axios');
-const { Contract } = require('../db');
-const { v4: uuidv4 } = require('uuid');
-const { Op } = require('sequelize');
+const {
+    GetContracts,
+    GetContractById,
+    EditContract,
+    DeleteContract,
+    NewContract
+} = require('../controllers/ContractController');
 
-router.get('/', async function (req, res, next) {
-  try {
-    return res.send({ message: 'Estoy en Contract' })
-  } catch {
-    return res.next({ message: 'Some Error' })
-  }
-});
+//OnlyRoutes
 
+router.get('/', GetContracts);
+router.get('/:id', GetContractById);
+router.put('/edit/:id', EditContract);
+router.put('/delete/:id', DeleteContract);
+router.put('/new', NewContract)
 
 module.exports = router;
