@@ -1,7 +1,6 @@
 const { Router } = require('express');
-const { GetContracts } = require('../controllers/ContractController');
 const router = Router();
-const {GetContracts, GetContractById, EditContract} = require('../controllers/ContractController');
+const {GetContracts, GetContractById, EditContract, DeleteContract} = require('../controllers/ContractController');
 
 
 
@@ -10,6 +9,6 @@ const {GetContracts, GetContractById, EditContract} = require('../controllers/Co
 router.get('/', GetContracts);
 router.get('/:id', GetContractById);
 router.put('/edit/:id', EditContract);
-
+router.put('/delete/:id', DeleteContract);
 
 module.exports = router;

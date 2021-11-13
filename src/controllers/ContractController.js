@@ -67,8 +67,23 @@ async function GetContracts (req, res, next) {
     }
   };
 
+  async function DeleteContract (req, res, next){
+    const id = req.params.id;
+  
+    try {
+      await Contract.update(
+        {status: "deleted"},
+        {where: {id}}
+      )
+      return res.sendStatus(200)
+    } catch(error){
+      res.send(error)
+    }
+  }
+
   module.exports = {
     GetContracts,
     GetContractById,
-    EditContract
+    EditContract,
+    DeleteContract
     };
