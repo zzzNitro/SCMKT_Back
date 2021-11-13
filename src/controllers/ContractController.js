@@ -61,7 +61,7 @@ async function GetContracts (req, res, next) {
         },
         {where: {id}}
       )
-      res.send(updatedContract)
+      res.sendStatus(200)
     } catch(error){
       res.send(error)
     }
@@ -81,9 +81,23 @@ async function GetContracts (req, res, next) {
     }
   }
 
+  async function NewContract (req, res) {
+    const {wallet1, wallet2, conditions, status} = req.body;
+    let contract = {
+      wallet1,
+      wallet2,
+      conditions,
+      status
+    }
+    
+    await Contract.create(contract);
+    res.sendStatus(200)
+  };
+
   module.exports = {
     GetContracts,
     GetContractById,
     EditContract,
-    DeleteContract
+    DeleteContract,
+    NewContract
     };
