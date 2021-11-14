@@ -119,7 +119,7 @@ async function NewUser (req, res) {
         },
         {where: {id}}
       )
-      res.send(updatedUser)
+      res.sendStatus(200)
     } catch(error){
       res.send(error)
     }

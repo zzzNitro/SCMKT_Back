@@ -83,8 +83,7 @@ async function GetContracts (req, res, next) {
         },
         {where: {id}}
       )
-      return res.send(console.log(updatedContract))
-      //res.sendStatus(200)
+      res.sendStatus(200)
     } catch(error){
       res.send(error)
     }
