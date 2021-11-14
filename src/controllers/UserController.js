@@ -8,6 +8,7 @@ const axios = require('axios');
 async function NewUser (req, res) {
     const {name, last_name, username, email, birthday, country, password, wallet, image} = req.body;
     let user = {
+      id: uuidv4(),
       name,
       last_name,
       username,
@@ -20,6 +21,7 @@ async function NewUser (req, res) {
     }
     
     User.create(user);
+    res.json(user)
   };
 
   async function GetUsers (req, res, next) {
@@ -91,7 +93,7 @@ async function NewUser (req, res) {
         {status: "inactive"},
         {where: {id}}
       )
-      
+      res.sendStatus(200)
     } catch(error){
       res.send(error)
     }

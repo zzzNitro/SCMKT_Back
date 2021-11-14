@@ -107,6 +107,7 @@ async function GetContracts (req, res, next) {
   async function NewContract (req, res) {
     const {wallet1, wallet2, conditions, status} = req.body;
     let contract = {
+      id: uuidv4(),
       wallet1,
       wallet2,
       conditions,
@@ -114,7 +115,8 @@ async function GetContracts (req, res, next) {
     }
     
     await Contract.create(contract);
-    res.sendStatus(200)
+
+    res.json(contract)
   };
 
   module.exports = {
