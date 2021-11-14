@@ -49,19 +49,42 @@ async function GetContracts (req, res, next) {
     const id = req.params.id;
     const { conditions, status } = req.body;
     
+
     try {
       let found = await Contract.findByPk(id)
       let contract = {
-        conditions: found.conditions,
-        status: found.status
+        conditions: {
+          name: found.conditions.name || "not defined",
+          shortdescription: found.conditions.shortdescription || "not defined",
+          longdescription: found.conditions.longdescription || "not defined",
+          amount: found.conditions.amount || "not defined",
+          coin: found.conditions.amount || "not defined",
+          condition: {
+            c1: found.conditions.condition.c1 || "not defined",
+            c1: found.conditions.condition.c2 || "not defined"
+          }
+        },
+        status: found.status || "unpublished"
       }
+
       let updatedContract = await Contract.update({
-        conditions: `${ conditions ? conditions : contract.conditions }`,
+        conditions: {
+          name: `${ conditions.name ? conditions.name : contract.conditions.name }`,
+          shortdescription: `${ conditions.shortdescription ? conditions.shortdescription : contract.conditions.shortdescription }`,
+          longdescription: `${ conditions.longdescription ? conditions.longdescription : contract.conditions.longdescription }`,
+          amount: `${ conditions.amount ? conditions.amount : contract.conditions.amount }`,
+          coin: `${ conditions.coin ? conditions.coin : contract.conditions.coin }`,
+          condition: {
+            c1: `${ conditions.condition.c1 ? conditions.condition.c1 : contract.conditions.condition.c1 }`,
+            c2: `${ conditions.condition.c2 ? conditions.condition.c2 : contract.conditions.condition.c2 }`
+          }
+        },
         status: `${ status ? status : contract.status }`,
         },
         {where: {id}}
       )
-      res.sendStatus(200)
+      return res.send(console.log(updatedContract))
+      //res.sendStatus(200)
     } catch(error){
       res.send(error)
     }
