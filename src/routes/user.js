@@ -9,7 +9,7 @@ const {NewUser,
 } = require('../controllers/UserController');
 
 // Only Routes
-router.post('/newUser', NewUser);
+router.put('/newUser', NewUser);
 router.get('/login', LoginUser);
 router.get('/:id', getUserById);
 router.put('/edit/:id', editUser);
