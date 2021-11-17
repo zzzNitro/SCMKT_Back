@@ -5,7 +5,6 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "nodemon": "nodemon -L",
     "test": "mocha -w ./tests/**/*.spec.js"
   },
   "repository": {
@@ -29,12 +28,10 @@
     "nodemon": "^2.0.15",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.9.0"
-  },
-  "devDependencies": {
+    "sequelize": "^6.9.0",
     "sequelize-cli": "^6.3.0"
   },
   "engines": {
-    "node": "14.15.1"
+    "node": "14.x"
   }
 }
