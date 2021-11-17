@@ -12,7 +12,10 @@ if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect:  'postgres',
     protocol: 'postgres',
-    logging:  true //false
+    logging:  true, //false
+    dialectOptions: {
+      ssl: true
+    }
   });
 } else {
   // the application is executed on the local machine
