@@ -21,10 +21,12 @@ module.exports = (sequelize) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: true,
+      unique: true,
     },
     birthday: {
       type: DataTypes.DATE,
@@ -41,6 +43,7 @@ module.exports = (sequelize) => {
     wallet: {
       type: DataTypes.STRING(130),
       allowNull: true,
+      //unique: true,
     },
     image: {
       type: DataTypes.BLOB,
