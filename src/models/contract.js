@@ -7,6 +7,8 @@ module.exports = (sequelize) => {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
+      defaultValue: DataTypes.UUIDV1,
+      allowNull: false,
     },
     wallet1: {
       type: DataTypes.STRING,
@@ -17,16 +19,14 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     conditions: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    amount: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.JSON,
       allowNull: false,
     },
     status: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-  });
+  },
+  { timestamps: false }
+  );
 };
