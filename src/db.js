@@ -14,7 +14,10 @@ if (process.env.DATABASE_URL) {
     protocol: 'postgres',
     logging:  true, //false
     dialectOptions: {
-      ssl: false
+      ssl: {
+        "require": false,
+        "rejectUnauthorized": false
+      }
     }
   });
 } else {
