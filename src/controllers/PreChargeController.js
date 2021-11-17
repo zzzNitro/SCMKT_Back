@@ -1,6 +1,6 @@
 const {User, Contract} = require("../db")
 
-async function preCharge(){
+async function preCharge(req, res, next){
     try {
         const users = [
             { id: "883ba5c8-52d4-458f-ab8f-69f35ad50739", name: "Benito", last_name: "Wyldish", username: "benito", email: "benito@gmail.com", birthday: "11/03/1955", country: "Haquira", password: "benito", wallet: "", image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJwSURBVDjLpVNNaxNRFD2TzOSTpFgZCg0JJPEDCaK48wNaEzS4cOlCsIgEXHWrCC3FRQXBP+BWCrpyKcZImhZmYdwVUaolIWXSGGPJpLHNJJnJjPdNnTBFXDlwuPe9eefcc98HZ5om/ufj7aRcLhdHo1Fa13VQBItOaJrmzFdzuVyG8TjmgMgzfr9/LZFIYDgc/lXF6VIQBJRKJciynJmfn1+1HJDq0uTkJJrNJrxe75jkJLK8Xq8jHA4jmUyiWq0u0PQqJ0nSTCAQWIvFYuh2u5YDG8wuI3IcB7fbbVUPhUIIBoMoFouo1WoZnvpZEkXR6pEt8vl8FuzqTicsGoaBfr+PVCqFra2tBZ5VUVUV7XYbg8FgvIhtJIv22J5jY57nMTExYTlkAmlWWVEU9Hq9I4R/CbAWIpEIc53m7eMpFApHBJyWnTmLjMxOzHaAr419tKayWLw7i82WjoDHhV/tH/jwZQf13X1cPR/FyUQc7Z6BM1MCll+UIFV6loCLOagpJu5lU2h0DfSGJrw8Z5GvnRLw4LqI9Q0Zfg+HgW5iW9GxNHcR8h7GAvnKdh0+Dw9tdLjbLg6YPRfF+28anhV+YoZydXj4TxsBfc1Eq9Vie5K3buLtp+/uXElNr1y+cBq6YWI67IZfcEFwgxwZ2Gho6Kq0kaQRPcbThZLxWqo8Jr0nrj8X7a30uZGX6zs4cZy3yCMSPqCqHdWEcmAg7HNR/zw6u01G/kicl68eZXXOviTkIk5hmXDr/o2UcDYuQvAIGJDd74qKzl4Xz9980lkxwkMib44fk/2RiEDhEmGOcJMgsjUEmbBOWCGsEXn84n4DYCewx+p/CvMAAAAASUVORK5CYII=", status: "active" },
@@ -221,7 +221,7 @@ async function preCharge(){
         // idUser = await User.findByPk("010f8b83-3ffa-437b-b4d1-c4120a6c92c5");
         // await idUser.setContracts([]);
         console.log("Datos Cargados")
-        return "Datos Cargados"
+        return res.send("Datos Cargados")
     } catch(error){
         console.log(error)
         return "Datos no cargados"
