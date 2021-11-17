@@ -5,20 +5,20 @@ const path = require('path');
 const {
   DB_USER, DB_PASSWORD, DB_HOST,
 } = process.env;
+
 var sequelize = "";
-if (!process.env.DATABASE_URL) {
-  // the application is executed on the local machine
-  sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/scmkt`, {
-  logging: false, // set to console.log to see the raw SQL queries
-  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-  });
-  
-} else {
+if (process.env.DATABASE_URL) {
   // the application is executed on Heroku ... use the postgres database
   sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect:  'postgres',
     protocol: 'postgres',
     logging:  true //false
+  });
+} else {
+  // the application is executed on the local machine
+  sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/scmkt`, {
+  logging: false, // set to console.log to see the raw SQL queries
+  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   });
 }
 
