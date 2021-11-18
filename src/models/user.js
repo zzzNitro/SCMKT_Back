@@ -44,7 +44,7 @@ module.exports = (sequelize) => {
     wallet: {
       type: DataTypes.STRING(130),
       allowNull: true,
-      unique: true,
+      //unique: true,
     },
     image: {
       type: DataTypes.STRING,
