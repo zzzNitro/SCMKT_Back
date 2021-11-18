@@ -77,7 +77,11 @@ async function LoginUser(req, res, next) {
         name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
         last_name: el.last_name,
         username: el.username,
-        contract: el.Contracts
+        email: el.email,
+        country: el.country,
+        wallet: el.wallet,
+        image: el.image,
+        status: el.status
       }
       return obj;
     })
