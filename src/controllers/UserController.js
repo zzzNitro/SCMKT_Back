@@ -144,8 +144,11 @@ async function getUserById(req, res, next) {
       name: found.name.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
       username: found.username,
-      status: found.status,
-      contract: found.Contracts
+      country: found.country,
+      wallet: found.wallet,
+      image: found.image,
+      contract: found.Contracts,
+      status: found.status
     }
 
     return res.json(user);
