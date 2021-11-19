@@ -22,7 +22,7 @@ async function NewUser(req, res) {
   }
   try {
     User.create(user);
-    res.json(user)
+    return res.json(user)
   } catch (error) {
     res.send({ message: 'Error' })
   }
