@@ -40,7 +40,7 @@ async function GetUsers(req, res, next) {
     let users = found.map((el) => {
       let obj = {
         id: el.id,
-        name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
+        name: el.name, //.charAt(0).toUpperCase() + el.name.slice(1),
         last_name: el.last_name,
         username: el.username
       }
@@ -74,7 +74,7 @@ async function LoginUser(req, res, next) {
     let user = found.map((el) => {
       let obj = {
         id: el.id,
-        name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
+        name: el.name, // .charAt(0).toUpperCase() + el.name.slice(1),
         last_name: el.last_name,
         username: el.username,
         email: el.email,
@@ -114,7 +114,7 @@ async function editUser(req, res, next) {
   try {
     let found = await User.findByPk(id)
     let user = {
-      name: found.name.charAt(0).toUpperCase() + found.name.slice(1),
+      name: found.name, //.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
       username: found.username,
       email: found.email
@@ -141,7 +141,7 @@ async function getUserById(req, res, next) {
 
     let user = {
       id: found.id,
-      name: found.name.charAt(0).toUpperCase() + found.name.slice(1),
+      name: found.name, //.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
       username: found.username,
       country: found.country,
