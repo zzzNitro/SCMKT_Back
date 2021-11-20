@@ -2,7 +2,6 @@ const { User, Contract } = require('../db');
 const { v4: uuidv4 } = require('uuid');
 const { Op } = require('sequelize');
 const axios = require('axios');
-const express = require('express');
 const jwt = require('express-jwt')
 const jwks = require('jwks-rsa');
 const cors = require('cors');
@@ -70,45 +69,49 @@ async function GetUsers(req, res, next) {
 };
 
 async function LoginUser(req, res, next) {
-  const { username, password } = req.body;
+  //const { username, password } = req.body;
 
-  if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
+  //if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
   try {
     const accessToken = req.Headers.authorization.split(' ')[1];
-    const response = await axios.get('',{
-      headers: {
-        authorization: `Barer ${accessToken}`
+    const response = await axios.get('https://dev-a8q5pol6.us.auth0.com/userinfo',{
+      header: {
+        authorizarion: `Bearer ${accessToken}`
       }
-    })
-    let found = await User.findAll({
-      where: {
-        [Op.and]: [
-          { username: username },
-          { password: password }
-        ]
-      },
-      include: {
-        model: Contract,
-        attributes: ['wallet1', 'wallet2', 'conditions'],
-      }
-    })
+    });
+    const userinfo = response.data;
 
-    let user = found.map((el) => {
-      let obj = {
-        id: el.id,
-        name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
-        last_name: el.last_name,
-        username: el.username,
-        email: el.email,
-        country: el.country,
-        wallet: el.wallet,
-        image: el.image,
-        status: el.status
-      }
-      return obj;
-    })
+    console.log('userinfo',userinfo);
+    
+    //let found = await User.findAll({
+    //   where: {
+    //     [Op.and]: [
+    //       { username: username },
+    //       { password: password }
+    //     ]
+    //   },
+    //   include: {
+    //     model: Contract,
+    //     attributes: ['wallet1', 'wallet2', 'conditions'],
+    //   }
+    // })
 
-    return (user.length && res.json(user)) || next({ message: 'The username and password are not correct or the user does not exist', status: 500 })
+    // let user = found.map((el) => {
+    //   let obj = {
+    //     id: el.id,
+    //     name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
+    //     last_name: el.last_name,
+    //     username: el.username,
+    //     email: el.email,
+    //     country: el.country,
+    //     wallet: el.wallet,
+    //     image: el.image,
+    //     status: el.status
+    //   }
+    //   return obj;
+    // })
+
+    // return (user.length && res.json(user)) || next({ message: 'The username and password are not correct or the user does not exist', status: 500 })
   } catch (error) {
     return next({ message: error })
   }
