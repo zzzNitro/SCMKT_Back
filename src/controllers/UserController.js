@@ -2,7 +2,23 @@ const { User, Contract } = require('../db');
 const { v4: uuidv4 } = require('uuid');
 const { Op } = require('sequelize');
 const axios = require('axios');
+const express = require('express');
+const jwt = require('express-jwt')
+const jwks = require('jwks-rsa');
+const cors = require('cors');
 
+const verifyJwt = jwt({
+  
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: 'https://dev-a8q5pol6.us.auth0.com/.well-known/jwks.json'
+}),
+audience:'SCMKT',
+issuer: 'https://dev-a8q5pol6.us.auth0.com/',
+algorithms: ['RS256']
+}).unless({path: ['/users/login']});
 
 
 async function NewUser(req, res) {
@@ -58,6 +74,12 @@ async function LoginUser(req, res, next) {
 
   if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
   try {
+    const accessToken = req.Headers.authorization.split(' ')[1];
+    const response = await axios.get('',{
+      headers: {
+        authorization: `Barer ${accessToken}`
+      }
+    })
     let found = await User.findAll({
       where: {
         [Op.and]: [
@@ -164,7 +186,8 @@ module.exports = {
   LoginUser,
   deactivateUser,
   editUser,
-  getUserById
+  getUserById,
+  verifyJwt
 
 };
 
