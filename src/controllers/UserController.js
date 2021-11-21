@@ -20,6 +20,7 @@ const verifyJwt = jwt({
 }).unless({ path: ['/'] });
 
 
+
 async function NewUser(req, res) {
   const { name, last_name, username, email, birthday, country, password, wallet, image } = req.body;
   let user = {
@@ -54,7 +55,7 @@ async function GetUsers(req, res, next) {
     let users = found.map((el) => {
       let obj = {
         id: el.id,
-        name: el.name.charAt(0).toUpperCase() + el.name.slice(1),
+        name: el.name, //.charAt(0).toUpperCase() + el.name.slice(1),
         last_name: el.last_name,
         username: el.username
       }
@@ -68,9 +69,9 @@ async function GetUsers(req, res, next) {
 };
 
 async function LoginUser(req, res, next) {
-  //const { username, password } = req.body;
+  const { username, password } = req.body;
 
-  //if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
+  if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
   try {
     // console.log('req.headers', req.headers)
     const accessToken = req.headers.authorization?.split(' ')[1];
@@ -153,7 +154,7 @@ async function editUser(req, res, next) {
   try {
     let found = await User.findByPk(id)
     let user = {
-      name: found.name.charAt(0).toUpperCase() + found.name.slice(1),
+      name: found.name, //.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
       username: found.username,
       email: found.email
@@ -180,7 +181,7 @@ async function getUserById(req, res, next) {
 
     let user = {
       id: found.id,
-      name: found.name.charAt(0).toUpperCase() + found.name.slice(1),
+      name: found.name, //.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
       username: found.username,
       country: found.country,
@@ -203,8 +204,7 @@ module.exports = {
   LoginUser,
   deactivateUser,
   editUser,
-  getUserById,
-  verifyJwt
+  getUserById
 
 };
 
