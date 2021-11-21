@@ -12,11 +12,11 @@ module.exports = (sequelize) => {
     },
     wallet1: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     wallet2: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     conditions: {
       type: DataTypes.JSON,
