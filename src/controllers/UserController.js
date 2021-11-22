@@ -70,9 +70,12 @@ async function GetUsers(req, res, next) {
 };
 
 async function LoginUser(req, res, next) {
-  const { username /*, password*/ } = req.body;
+  //const { username, password } = req.body;
 
-  if (!username /*|| !password*/) return next({ message: 'User and Password is require!', status: 500 });
+  /*
+  if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
+  */
+
   try {
     // console.log('req.headers', req.headers)
     const accessToken = req.headers.authorization?.split(' ')[1];
