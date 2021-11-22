@@ -37,7 +37,8 @@ async function NewUser(req, res) {
     status: 'active'
   }
   try {
-    res.json(User.create(user))
+    console.log(user)
+    return res.json(User.create(user))
   } catch (error) {
     res.send({ message: 'Error' })
   }
@@ -69,9 +70,9 @@ async function GetUsers(req, res, next) {
 };
 
 async function LoginUser(req, res, next) {
-  const { username, password } = req.body;
+  const { username /*, password*/ } = req.body;
 
-  if (!username || !password) return next({ message: 'User and Password is require!', status: 500 });
+  if (!username /*|| !password*/) return next({ message: 'User and Password is require!', status: 500 });
   try {
     // console.log('req.headers', req.headers)
     const accessToken = req.headers.authorization?.split(' ')[1];
@@ -114,7 +115,7 @@ async function LoginUser(req, res, next) {
       // console.log('found.dataValues', found.dataValues)
       user = {
         id: found.dataValues.id,
-        name: found.dataValues.name.charAt(0).toUpperCase() + found.dataValues.name.slice(1),
+        name: found.dataValues.name,//.charAt(0).toUpperCase() + found.dataValues.name.slice(1),
         last_name: found.dataValues.last_name,
         username: found.dataValues.username,
         email: found.dataValues.email,
