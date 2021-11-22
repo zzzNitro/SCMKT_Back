@@ -87,7 +87,7 @@ async function LoginUser(req, res, next) {
     });
     const userinfo = response.data;
 
-    // console.log('userinfo', userinfo);
+    console.log('userinfo', userinfo);
 
     let found = await User.findOne({
       where: { email: userinfo.email },
