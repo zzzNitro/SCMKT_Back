@@ -149,21 +149,22 @@ async function deactivateUser(req, res, next) {
 
 async function editUser(req, res, next) {
   const id = req.params.id;
-  const { name, last_name, username, email } = req.body;
+  const { name, last_name, country, wallet, image } = req.body;
 
   try {
     let found = await User.findByPk(id)
     let user = {
       name: found.name, //.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
-      username: found.username,
-      email: found.email
+      country: found.country,
+      wallet: found.wallet,
+      image: found.image
     }
     let updatedUser = await User.update({
       name: `${name ? name : user.name}`,
       last_name: `${last_name ? last_name : user.last_name}`,
-      username: `${username ? username : user.username}`,
-      email: `${email ? email : user.email}`,
+      country: `${country ? country : user.country}`,
+      image: `${image ? image : user.image}`
     },
       { where: { id } }
     )
