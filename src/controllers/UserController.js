@@ -184,6 +184,7 @@ async function getUserById(req, res, next) {
       name: found.name, //.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
       username: found.username,
+      email: found.email,
       country: found.country,
       wallet: found.wallet,
       image: found.image,
@@ -197,6 +198,23 @@ async function getUserById(req, res, next) {
   }
 };
 
+async function getUserByEmail(req, res, next) {
+  const { email } = req.params;
+
+  try {
+    let found = await User.findOne({
+      where: {
+          email: {
+              [Op.iLike]: `%${email}%`
+            }
+          }
+        })
+
+    return res.send(found.id);
+  } catch (error) {
+    return next({ message: error })
+  }
+};
 
 module.exports = {
   NewUser,
@@ -204,7 +222,8 @@ module.exports = {
   LoginUser,
   deactivateUser,
   editUser,
-  getUserById
+  getUserById,
+  getUserByEmail
 
 };
 
