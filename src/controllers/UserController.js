@@ -168,6 +168,7 @@ async function editUser(req, res, next) {
       name: `${name ? name : user.name}`,
       last_name: `${last_name ? last_name : user.last_name}`,
       country: `${country ? country : user.country}`,
+      wallet: `${wallet ? wallet : user.wallet}`,
       image: `${image ? image : user.image}`
     },
       { where: { id } }
