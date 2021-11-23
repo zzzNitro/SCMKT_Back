@@ -19,6 +19,11 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    name_show: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: true,
+    },
     username: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -29,12 +34,27 @@ module.exports = (sequelize) => {
       allowNull: true,
       unique: true,
     },
+    email_show: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: true,
+    },
     birthday: {
       type: DataTypes.DATE,
       allowNull: true,
     },
+    birthday_show: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: true,
+    },
     country: {
       type: DataTypes.STRING,
+      allowNull: true,
+    },
+    country_show: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
       allowNull: true,
     },
     password: {
@@ -55,6 +75,6 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
   },
-  { timestamps: false }
+    { timestamps: false }
   );
 };
