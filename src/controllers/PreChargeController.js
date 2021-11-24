@@ -25,6 +25,9 @@ async function preCharge(req, res, next){
             status: "pending",
             conditions: {
             name: "mally Poreless Perfection Glowing Foundation Tan",
+            type:"type1",
+            duration:"10",
+            category:"category1",
             shortdescription: "Supplement Left Lacrimal Duct with Nonaut Sub, Endo",
             longdescription: "Other repair of laceration of eyelid, partial-thickness",
             amount: "$5.68",
@@ -42,6 +45,9 @@ async function preCharge(req, res, next){
             status: "pending",
             conditions: {
             name: "Suboxone",
+            type:"type1",
+            duration:"10",
+            category:"category1",
             shortdescription: "Excision of Right Thorax Muscle, Perc Endo Approach",
             longdescription: "Repair of current obstetric laceration of corpus uteri",
             amount: "$1.14",
@@ -59,6 +65,9 @@ async function preCharge(req, res, next){
             status: "done",
             conditions: {
             name: "Simvastatin",
+            type:"type1",
+            duration:"10",
+            category:"category1",
             shortdescription: "Repair Right External Ear, Open Approach",
             longdescription: "Revision of ureterointestinal anastomosis",
             amount: "$3.65",
@@ -76,6 +85,9 @@ async function preCharge(req, res, next){
             status: "pending",
             conditions: {
             name: "Olanzapine",
+            type:"type2",
+            duration:"20",
+            category:"category2",
             shortdescription: "Supplement Head with Synthetic Substitute, Open Approach",
             longdescription: "Other operations on cornea",
             amount: "$5.66",
@@ -93,6 +105,9 @@ async function preCharge(req, res, next){
             status: "pending",
             conditions: {
             name: "Hydrocortisone",
+            type:"type2",
+            duration:"30",
+            category:"category2",
             shortdescription: "Bypass L Fallopian Tube to L Fallop w Nonaut Sub, Perc Endo",
             longdescription: "Other arthrotomy, other specified sites",
             amount: "$8.06",
@@ -110,6 +125,9 @@ async function preCharge(req, res, next){
             status: "done",
             conditions: {
             name: "NEXICLEAR ACNE TREATMENT",
+            type:"type3",
+            duration:"10",
+            category:"category1",
             shortdescription: "Dilation of R Ext Carotid with 3 Drug-elut, Perc Approach",
             longdescription: "Sphenoidectomy",
             amount: "$6.98",
@@ -127,6 +145,9 @@ async function preCharge(req, res, next){
             status: "done",
             conditions: {
             name: "Simcor",
+            type:"type2",
+            duration:"10",
+            category:"category1",
             shortdescription: "Destruction of Anus, Open Approach",
             longdescription: "Microscopic examination of specimen from upper gastrointestinal tract and of vomitus, cell block and Papanicolaou smear",
             amount: "$1.76",
@@ -144,6 +165,9 @@ async function preCharge(req, res, next){
             status: "pending",
             conditions: {
             name: "Rx Act all day pain relief",
+            type:"type1",
+            duration:"20",
+            category:"category3",
             shortdescription: "Replacement of L Post Tib Art with Nonaut Sub, Open Approach",
             longdescription: "Correction of ureteropelvic junction",
             amount: "$5.56",
@@ -161,6 +185,9 @@ async function preCharge(req, res, next){
             status: "pending",
             conditions: {
             name: "Isovue-M",
+            type:"type2",
+            duration:"10",
+            category:"category3",
             shortdescription: "Transplantation of Nervous System into POC, Perc Approach",
             longdescription: "Lysis of other anterior synechiae",
             amount: "$8.77",
@@ -178,6 +205,9 @@ async function preCharge(req, res, next){
             status: "pending",
             conditions: {
             name: "Metformin Hydrochloride",
+            type:"type2",
+            duration:"40",
+            category:"category1",
             shortdescription: "Isotope Administration to Whole Body using Strontium 90",
             longdescription: "Closed reduction of separated epiphysis, other specified bone",
             amount: "$5.60",
