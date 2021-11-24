@@ -14,6 +14,6 @@ router.get('/', GetContracts);
 router.get('/:id', GetContractById);
 router.put('/edit/:id', EditContract);
 router.put('/delete/:id', DeleteContract);
-router.put('/new', NewContract)
+router.post('/new', NewContract)
 
 module.exports = router;
