@@ -18,6 +18,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    author: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     conditions: {
       type: DataTypes.JSON,
       allowNull: false,

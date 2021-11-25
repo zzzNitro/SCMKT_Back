@@ -33,10 +33,18 @@ async function GetContracts (req, res, next) {
     //#endregion
 
     //#region author
-    // if (author && author !== "") {
-    //   console.log(`Entro al if con author = ${author}`)
-    //   contracts = contracts.filter(contract => contract.conditions.type === author)
-    // }
+    if (author && author !== "") {
+      console.log(`Entro al if con author = ${author}`)
+      contracts = await Contract.findAll({
+          where: {
+              author: {
+                  [Op.iLike]: `%${author}%`
+                }
+          },
+      })
+    } else {
+      contracts = await Contract.findAll(/*{ include: User.name }*/)
+    }
     //#endregion
 
     //#region type
@@ -119,6 +127,7 @@ async function GetContractById (req, res, next) {
       id: found.id,
       wallet1: found.wallet1,
       wallet2: found.wallet2,
+      author: found.author,
       conditions: found.conditions,
       status: found.status
     }
@@ -194,11 +203,12 @@ async function DeleteContract (req, res, next){
 }
 
 async function NewContract (req, res) {
-  const {wallet1, wallet2, conditions, status} = req.body;
+  const {wallet1, wallet2, author, conditions, status} = req.body;
   let contract = {
     id: uuidv4(),
     wallet1,
     wallet2,
+    author,
     conditions,
     status
   }
