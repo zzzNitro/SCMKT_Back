@@ -7,29 +7,29 @@ const { condition } = require('sequelize');
 const contract = require('../models/contract');
 
 
-async function GetContracts (req, res, next) {
-    try {
-      let { page, name, author, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
-      let contracts = []
-      page = page ? page : 1
-      const contractsOnPage = 12
+async function GetContracts(req, res, next) {
+  try {
+    let { page, name, author, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
+    let contracts = []
+    page = page ? page : 1
+    const contractsOnPage = 12
 
-      //#region name
-      if (name && name !== "") {
-        console.log(`Entro al if con name = ${name}`)
-        contracts = await Contract.findAll({
-            where: {
-                conditions: {
-                  name: {
-                    [Op.iLike]: `%${name}%`
-                  }
-                }
-            },
-            //include: User.name
-        })
-      } else {
-        contracts = await Contract.findAll(/*{ include: User.name }*/)
-      }
+    //#region name
+    if (name && name !== "") {
+      console.log(`Entro al if con name = ${name}`)
+      contracts = await Contract.findAll({
+        where: {
+          conditions: {
+            name: {
+              [Op.iLike]: `%${name}%`
+            }
+          }
+        },
+        //include: User.name
+      })
+    } else {
+      contracts = await Contract.findAll(/*{ include: User.name }*/)
+    }
     //#endregion
 
     //#region author
@@ -81,43 +81,43 @@ async function GetContracts (req, res, next) {
       contracts = contracts.filter(contract => contract.status === filterState)
     }
     //#endregion
-/*
-      let found = await Contract.findAll()
-  
-      contracts = found.map((el) => {
-        let contract = {
-          id: el.id,
-          wallet1: el.wallet1,
-          wallet2: el.wallet2,
-          conditions: el.conditions,
-          status: el.status
-        }
-        return contract;
-      })
-*/
-      //#region PAGE
-      if (page > 1) {
-        contracts = contracts.slice((contractsOnPage * (page - 1)) , (contractsOnPage * (page - 1)) + contractsOnPage )
-      } else {
-        contracts = contracts.slice(0, (contractsOnPage))
-      }
-      // //#endregion
-
-      // return res.send({
-      //     all: contracts,
-      //     result: result,
-      //     count: contracts.length
-      // })
-
-      return res.json(contracts)
-     } catch (error) {
-
-      console.log(error)
-      next(error)
+    /*
+          let found = await Contract.findAll()
+      
+          contracts = found.map((el) => {
+            let contract = {
+              id: el.id,
+              wallet1: el.wallet1,
+              wallet2: el.wallet2,
+              conditions: el.conditions,
+              status: el.status
+            }
+            return contract;
+          })
+    */
+    //#region PAGE
+    if (page > 1) {
+      contracts = contracts.slice((contractsOnPage * (page - 1)), (contractsOnPage * (page - 1)) + contractsOnPage)
+    } else {
+      contracts = contracts.slice(0, (contractsOnPage))
     }
-  };
+    // //#endregion
 
-async function GetContractById (req, res, next) {
+    // return res.send({
+    //     all: contracts,
+    //     result: result,
+    //     count: contracts.length
+    // })
+
+    return res.json(contracts)
+  } catch (error) {
+
+    console.log(error)
+    next(error)
+  }
+};
+
+async function GetContractById(req, res, next) {
   const { id } = req.params;
 
   try {
@@ -138,10 +138,10 @@ async function GetContractById (req, res, next) {
   }
 };
 
-async function EditContract (req, res, next){
+async function EditContract(req, res, next) {
   const id = req.params.id;
   const { conditions, status } = req.body;
-  
+
 
   try {
     let found = await Contract.findByPk(id)
@@ -165,57 +165,67 @@ async function EditContract (req, res, next){
 
     let updatedContract = await Contract.update({
       conditions: {
-        name: `${ conditions.name ? conditions.name : contract.conditions.name }`,
-        type: `${ conditions.type ? conditions.type : contract.conditions.type }`,
-        duration: `${ conditions.duration ? conditions.duration : contract.conditions.duration }`,
-        category: `${ conditions.category ? conditions.category : contract.conditions.category }`,
-        shortdescription: `${ conditions.shortdescription ? conditions.shortdescription : contract.conditions.shortdescription }`,
-        longdescription: `${ conditions.longdescription ? conditions.longdescription : contract.conditions.longdescription }`,
-        amount: `${ conditions.amount ? conditions.amount : contract.conditions.amount }`,
-        coin: `${ conditions.coin ? conditions.coin : contract.conditions.coin }`,
+        name: `${conditions.name ? conditions.name : contract.conditions.name}`,
+        type: `${conditions.type ? conditions.type : contract.conditions.type}`,
+        duration: `${conditions.duration ? conditions.duration : contract.conditions.duration}`,
+        category: `${conditions.category ? conditions.category : contract.conditions.category}`,
+        shortdescription: `${conditions.shortdescription ? conditions.shortdescription : contract.conditions.shortdescription}`,
+        longdescription: `${conditions.longdescription ? conditions.longdescription : contract.conditions.longdescription}`,
+        amount: `${conditions.amount ? conditions.amount : contract.conditions.amount}`,
+        coin: `${conditions.coin ? conditions.coin : contract.conditions.coin}`,
         condition: {
-          c1: `${ conditions.condition.c1 ? conditions.condition.c1 : contract.conditions.condition.c1 }`,
-          c2: `${ conditions.condition.c2 ? conditions.condition.c2 : contract.conditions.condition.c2 }`
+          c1: `${conditions.condition.c1 ? conditions.condition.c1 : contract.conditions.condition.c1}`,
+          c2: `${conditions.condition.c2 ? conditions.condition.c2 : contract.conditions.condition.c2}`
         }
       },
-      status: `${ status ? status : contract.status }`,
-      },
-      {where: {id}}
+      status: `${status ? status : contract.status}`,
+    },
+      { where: { id } }
     )
     res.sendStatus(200)
-  } catch(error){
+  } catch (error) {
     res.send(error)
   }
 };
 
-async function DeleteContract (req, res, next){
+async function DeleteContract(req, res, next) {
   const id = req.params.id;
 
   try {
     await Contract.update(
-      {status: "deleted"},
-      {where: {id}}
+      { status: "deleted" },
+      { where: { id } }
     )
     return res.sendStatus(200)
-  } catch(error){
+  } catch (error) {
     res.send(error)
   }
 }
 
-async function NewContract (req, res) {
-  const {wallet1, wallet2, author, conditions, status} = req.body;
+
+async function NewContract(req, res) {
+  const { wallet1, wallet2, author, conditions, status, ownerId } = req.body;
+  let id = uuidv4();
   let contract = {
-    id: uuidv4(),
+    id,
     wallet1,
     wallet2,
     author,
     conditions,
     status
   }
-  
-  await Contract.create(contract);
 
-  res.json(contract)
+  try {
+    await Contract.create(contract);
+
+    let user = await User.findByPk(ownerId);
+    user.addContracts(id);
+
+    res.json(contract)
+  } catch (error) {
+    console.log(error)
+    return res.send({ message: 'An error occurred in the creation of the contract. Please try again ', status: 500 })
+  }
 };
 
 module.exports = {
@@ -224,4 +234,4 @@ module.exports = {
   EditContract,
   DeleteContract,
   NewContract
-  };
+};
