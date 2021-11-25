@@ -6,7 +6,7 @@ const {NewUser,
     deactivateUser,
     editUser,
     getUserById,
-    getUserByEmail
+    getUserByEmail,
 } = require('../controllers/UserController');
 
 // Only Routes
