@@ -37,12 +37,26 @@ async function NewUser(req, res) {
     image,
     status: 'active'
   }
-  try {
-    console.log(user)
+  
+    User.create(user)
+    .then(() => {
+      const msg = {
+        to: email,
+        from: 'contacto@dexforge.com',
+        subject: "Notificaciòn de Registro",
+        text: ` Hola ${name}, te registraste en Smart Contracts desde ${country}`,
+        html: "<h1>{name}</h1>",
+        // mail_settings: {
+          // sandbox_mode: {
+          //   enable: sandboxMode
+          // }
+        // }
+      }
+      await sgMail.send(msg)
+    })
+    .catch(error => console.log(error));
     return res.json(User.create(user))
-  } catch (error) {
-    res.send({ message: 'Error' })
-  }
+  
 };
 
 async function GetUsers(req, res, next) {
