@@ -33,18 +33,18 @@ async function GetContracts(req, res, next) {
     //#endregion
 
     //#region author
-    if (author && author !== "") {
-      console.log(`Entro al if con author = ${author}`)
-      contracts = await Contract.findAll({
-          where: {
-              author: {
-                  [Op.iLike]: `%${author}%`
-                }
-          },
-      })
-    } else {
-      contracts = await Contract.findAll(/*{ include: User.name }*/)
-    }
+    // if (author && author !== "") {
+    //   console.log(`Entro al if con author = ${author}`)
+    //   contracts = await Contract.findAll({
+    //       where: {
+    //           author: {
+    //               [Op.iLike]: `%${author}%`
+    //             }
+    //       },
+    //   })
+    // } else {
+    //   contracts = await Contract.findAll(/*{ include: User.name }*/)
+    // }
     //#endregion
 
     //#region type
