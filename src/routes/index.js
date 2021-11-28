@@ -4,6 +4,7 @@ const { Router } = require('express');
 const user = require('./user');
 const contract = require('./contract');
 const preCharge = require('./precharge')
+// const createMail = require('./sendMail')
 
 const router = Router();
 
@@ -13,5 +14,6 @@ const router = Router();
 router.use('/user', user);
 router.use('/contract', contract);
 router.use('/precharge', preCharge);
+// router.use(createMail)
 
 module.exports = router;

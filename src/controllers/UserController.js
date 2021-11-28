@@ -5,6 +5,7 @@ const axios = require('axios');
 const jwt = require('express-jwt')
 const jwks = require('jwks-rsa');
 const cors = require('cors');
+const sgMail = require('../services/sendgrid');
 
 const verifyJwt = jwt({
 
@@ -222,6 +223,31 @@ async function getUserByEmail(req, res, next) {
   }
 };
 
+async function sendMail(req, res) {
+  const { to, subject, text, html, sandboxMode = false } = req.body;
+
+  const msg = {
+    to,
+    from: 'contacto@dexforge.com',
+    subject,
+    text,
+    html,
+    mail_settings: {
+      sandbox_mode: {
+        enable: sandboxMode
+      }
+    }
+  };
+
+  try {
+    await sgMail.send(msg)
+  } catch (err) {
+    return res.status(err.code).send(err.message)
+  }
+
+  res.status(201).send({success: true})
+}
+
 module.exports = {
   NewUser,
   GetUsers,
@@ -229,7 +255,8 @@ module.exports = {
   deactivateUser,
   editUser,
   getUserById,
-  getUserByEmail
+  getUserByEmail,
+  sendMail
 
 };
 
