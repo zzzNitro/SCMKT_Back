@@ -33,7 +33,7 @@ server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(function (req, res, next) {
 
-  var allowedDomains = ['http://localhost:3001','https://henryfront.surge.sh/' ];
+  var allowedDomains = ['http://localhost:3000','https://henryfront.surge.sh/' ];
   var origin = req.headers.origin;
   if(allowedDomains.indexOf(origin) > -1){
     res.header('Access-Control-Allow-Origin', origin);
