@@ -166,11 +166,11 @@ async function editUser(req, res, next) {
       image: found.image
     }
     let updatedUser = await User.update({
-      name: `${name ? name : user.name}`,
-      last_name: `${last_name ? last_name : user.last_name}`,
-      country: `${country ? country : user.country}`,
-      wallet: `${wallet ? wallet : user.wallet}`,
-      image: `${image ? image : user.image}`
+      name: `${name !== '' ? name : user.name}`,
+      last_name: `${last_name !== '' ? last_name : user.last_name}`,
+      country: `${country !== '' ? country : user.country}`,
+      wallet: `${wallet !== '' ? wallet : user.wallet}`,
+      image: `${image !== '' ? image : user.image}`
     },
       { where: { id } }
     )
