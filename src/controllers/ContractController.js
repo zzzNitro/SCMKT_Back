@@ -12,7 +12,7 @@ async function GetContracts(req, res, next) {
     let { page, name, author, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
     let contracts = []
     page = page ? page : 1
-    const contractsOnPage = 12
+    const contractsOnPage = 500
 
     //#region name
     if (name && name !== "") {
