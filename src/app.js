@@ -33,12 +33,12 @@ server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(function (req, res, next) {
 
-  var allowedDomains = [ 'http://localhost:3000','https://henryfront.surge.sh/','https://scmkt-4fe6b.web.app/' ];
-  var origin = req.headers.origin;
-  if(allowedDomains.indexOf(origin) > -1){
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  //res.header('Access-Control-Allow-Origin', '*');
+  // var allowedDomains = [ 'http://localhost:3000','https://henryfront.surge.sh/','https://scmkt-4fe6b.web.app/' ];
+  // var origin = req.headers.origin;
+  // if(allowedDomains.indexOf(origin) > -1){
+  //   res.header('Access-Control-Allow-Origin', origin);
+  // }
+  res.header('Access-Control-Allow-Origin', `*`);
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
