@@ -25,7 +25,7 @@ async function GetContracts(req, res, next) {
             }
           }
         },
-        //include: User.name
+        include: User.id
       })
     } else {
       contracts = await Contract.findAll(/*{ include: User.name }*/)
