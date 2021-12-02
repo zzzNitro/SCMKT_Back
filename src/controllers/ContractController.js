@@ -12,11 +12,11 @@ async function GetContracts(req, res, next) {
     let { page, name, author, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
     let contracts = []
     page = page ? page : 1
-    const contractsOnPage = 500
+    const contractsOnPage = 12
 
     //#region name
     if (name && name !== "") {
-      console.log(`Entro al if con name = ${name}`)
+      // console.log(`Entro al if con name = ${name}`)
       contracts = await Contract.findAll({
         where: {
           conditions: {
@@ -49,35 +49,35 @@ async function GetContracts(req, res, next) {
 
     //#region type
     if (filterType && filterType !== "") {
-      console.log(`Entro al if con type = ${filterType}`)
+      // console.log(`Entro al if con type = ${filterType}`)
       contracts = contracts.filter(contract => contract.conditions.type === filterType)
     }
     //#endregion
 
     //#region category
     if (filterCategory && filterCategory !== "") {
-      console.log(`Entro al if con category = ${filterCategory}`)
+      // console.log(`Entro al if con category = ${filterCategory}`)
       contracts = contracts.filter(contract => contract.conditions.category === filterCategory)
     }
     //#endregion
 
     //#region Higher Duration
     if (filterDurationH && filterDurationH !== "") {
-      console.log(`Entro al if con duration = ${filterDurationH}`)
+      // console.log(`Entro al if con duration = ${filterDurationH}`)
       contracts = contracts.filter(contract => contract.conditions.duration >= filterDurationH)
     }
     //#endregion
 
     //#region Lower Duration
     if (filterDurationL && filterDurationL !== "") {
-      console.log(`Entro al if con duration = ${filterDurationL}`)
+      // console.log(`Entro al if con duration = ${filterDurationL}`)
       contracts = contracts.filter(contract => contract.conditions.duration <= filterDurationL)
     }
     //#endregion
 
     //#region state
     if (filterState && filterState !== "") {
-      console.log(`Entro al if con state = ${filterState}`)
+      // console.log(`Entro al if con state = ${filterState}`)
       contracts = contracts.filter(contract => contract.status === filterState)
     }
     //#endregion
@@ -111,7 +111,6 @@ async function GetContracts(req, res, next) {
 
     return res.json(contracts)
   } catch (error) {
-
     console.log(error)
     next(error)
   }
@@ -192,10 +191,22 @@ async function DeleteContract(req, res, next) {
   const id = req.params.id;
 
   try {
-    await Contract.update(
-      { status: "deleted" },
-      { where: { id } }
-    )
+    if (!id) {
+      const ids = req.body.contract;
+      await Contract.update(
+        { status: "deleted" },
+        {
+          where: {
+            id: { [Op.in]: ids }
+          }
+        }
+      )
+    } else {
+      await Contract.update(
+        { status: "deleted" },
+        { where: { id } }
+      )
+    }
     return res.sendStatus(200)
   } catch (error) {
     res.send(error)
