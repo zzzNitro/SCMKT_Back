@@ -28,7 +28,7 @@ async function GetContracts(req, res, next) {
         include: User.id
       })
     } else {
-      contracts = await Contract.findAll(/*{ include: User.name }*/)
+      contracts = await Contract.findAll({ include: User.name })
     }
     //#endregion
 
