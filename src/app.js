@@ -33,7 +33,7 @@ server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(cors({
-  origin: 'https://scmkt-4fe6b.web.app/'
+  origin: 'https://scmkt-4fe6b.web.app'
 }))
   
 //   function (req, res, next) {
