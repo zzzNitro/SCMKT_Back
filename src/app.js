@@ -32,9 +32,7 @@ server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
 server.use(morgan('dev'));
-server.use(cors({
-  origin: 'https://scmkt-4fe6b.web.app'
-}))
+server.use(cors())
   
 //   function (req, res, next) {
 
