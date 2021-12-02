@@ -9,10 +9,10 @@ const contract = require('../models/contract');
 
 async function GetContracts(req, res, next) {
   try {
-    let { page, name, author, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
+    let { name, author, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
     let contracts = []
-    page = page ? page : 1
-    const contractsOnPage = 12
+    // page = page ? page : 1
+    // const contractsOnPage = 12
 
     //#region name
     if (name && name !== "") {
@@ -95,13 +95,13 @@ async function GetContracts(req, res, next) {
             return contract;
           })
     */
-    //#region PAGE
-    if (page > 1) {
-      contracts = contracts.slice((contractsOnPage * (page - 1)), (contractsOnPage * (page - 1)) + contractsOnPage)
-    } else {
-      contracts = contracts.slice(0, (contractsOnPage))
-    }
-    // //#endregion
+    // //#region PAGE
+    // if (page > 1) {
+    //   contracts = contracts.slice((contractsOnPage * (page - 1)), (contractsOnPage * (page - 1)) + contractsOnPage)
+    // } else {
+    //   contracts = contracts.slice(0, (contractsOnPage))
+    // }
+    // // //#endregion
 
     // return res.send({
     //     all: contracts,
