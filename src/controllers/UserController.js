@@ -6,6 +6,27 @@ const jwt = require('express-jwt')
 const jwks = require('jwks-rsa');
 const cors = require('cors');
 const sgMail = require('../services/sendgrid');
+const { NM_HOST, NM_PORT, NM_USER, NM_PASS } = process.env;
+const nodemailer = require("nodemailer");
+console.log('Enviando emails')
+
+async function main() {
+  // Generate test SMTP service account from ethereal.email
+  // Only needed if you don't have a real mail account for testing
+  let testAccount = await nodemailer.createTestAccount();
+
+
+const transporter = nodemailer.createTransport({
+    host: NM_HOST,
+    port: NM_PORT,
+    secure: true,
+    auth: {
+        user: NM_USER,
+        pass: NM_PASS
+    }
+});
+
+}
 
 const verifyJwt = jwt({
 
@@ -154,7 +175,7 @@ async function deactivateUser(req, res, next) {
 
 async function editUser(req, res, next) {
   const id = req.params.id;
-  const { name, last_name, country, wallet, image } = req.body;
+  const { name, last_name, country, wallet, image, email } = req.body;
 
   try {
     let found = await User.findByPk(id)
@@ -163,22 +184,38 @@ async function editUser(req, res, next) {
       last_name: found.last_name,
       country: found.country,
       wallet: found.wallet,
-      image: found.image
+      image: found.image,
+      email: found.email
     }
     let updatedUser = await User.update({
       name: `${name !== '' ? name : user.name}`,
       last_name: `${last_name !== '' ? last_name : user.last_name}`,
       country: `${country !== '' ? country : user.country}`,
       wallet: `${wallet !== '' ? wallet : user.wallet}`,
-      image: `${image !== '' ? image : user.image}`
+      image: `${image !== '' ? image : user.image}`,
+      email: `${email !== '' ? email : user.email}`
+
     },
       { where: { id } }
     )
+    await transporter.sendMail({
+      from: '"Eber Hernández" <eberaplicaciones@gmail.com>', // sender address
+      to: `${user.email}, ebershr@gmail.com, leyder.gallego@gmail.com`, // list of receivers
+      subject: "Desde el back de scmkt", // Subject line
+      text: "Edición de datos", // plain text body
+      html: `<b>Hola ${user.name}... Si se envió este correo está funcional el envío de notificaciones</b>`, // html body
+    });
+    
     res.sendStatus(200)
+
+    
+
   } catch (error) {
     res.send(error)
   }
 };
+
+
 
 async function getUserById(req, res, next) {
   const { id } = req.params;
