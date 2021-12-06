@@ -9,7 +9,7 @@ const contract = require('../models/contract');
 
 async function GetContracts(req, res, next) {
   try {
-    let { name, author, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
+    let { name, author, ownerId, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
     let contracts = []
     // page = page ? page : 1
     // const contractsOnPage = 12
@@ -46,6 +46,14 @@ async function GetContracts(req, res, next) {
     //   contracts = await Contract.findAll(/*{ include: User.name }*/)
     // }
     //#endregion
+
+    //#ownerId
+    if (ownerId && ownerId !== "") {
+      let myContracts = await User.findByPk(ownerId, { include: [Contract] })
+      let contractIds = myContracts.Contracts.map((el) => el.id )
+      contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0 )
+    }
+    //#endownerId
 
     //#region type
     if (filterType && filterType !== "") {
@@ -218,7 +226,6 @@ async function NewContract(req, res) {
   const { wallet1, wallet2, author, conditions, status, ownerId } = req.body;
   let id = uuidv4();
   let contract = {
-    id,
     wallet1,
     wallet2,
     author,
@@ -227,10 +234,10 @@ async function NewContract(req, res) {
   }
 
   try {
-    await Contract.create(contract);
+    let newC = await Contract.create(contract);
 
     let user = await User.findByPk(ownerId);
-    user.addContracts(id);
+    user.addContracts(newC.id);
 
     res.json(contract)
   } catch (error) {
