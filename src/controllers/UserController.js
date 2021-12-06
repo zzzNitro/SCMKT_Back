@@ -179,6 +179,7 @@ async function editUser(req, res, next) {
 
   try {
     let found = await User.findByPk(id)
+
     let user = {
       name: found.name, //.charAt(0).toUpperCase() + found.name.slice(1),
       last_name: found.last_name,
@@ -187,6 +188,17 @@ async function editUser(req, res, next) {
       image: found.image,
       email: found.email
     }
+
+    const transporter = nodemailer.createTransport({
+      host: NM_HOST,
+      port: NM_PORT,
+      secure: true,
+      auth: {
+          user: NM_USER,
+          pass: NM_PASS
+      }
+  });
+
     let updatedUser = await User.update({
       name: `${name !== '' ? name : user.name}`,
       last_name: `${last_name !== '' ? last_name : user.last_name}`,
@@ -198,9 +210,10 @@ async function editUser(req, res, next) {
     },
       { where: { id } }
     )
+
     await transporter.sendMail({
       from: '"Eber Hernández" <eberaplicaciones@gmail.com>', // sender address
-      to: `${user.email}, ebershr@gmail.com, leyder.gallego@gmail.com`, // list of receivers
+      to: `${user.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
       subject: "Desde el back de scmkt", // Subject line
       text: "Edición de datos", // plain text body
       html: `<b>Hola ${user.name}... Si se envió este correo está funcional el envío de notificaciones</b>`, // html body
@@ -214,6 +227,7 @@ async function editUser(req, res, next) {
     res.send(error)
   }
 };
+
 
 
 
