@@ -150,7 +150,7 @@ async function GetContractById(req, res, next) {
 
 async function EditContract(req, res, next) {
   const id = req.params.id;
-  const { conditions, status } = req.body;
+  const { conditions, status, name, email } = req.body;
 
 
   try {
@@ -173,6 +173,16 @@ async function EditContract(req, res, next) {
       status: found.status || "unpublished"
     }
 
+    const transporter = nodemailer.createTransport({
+      host: NM_HOST,
+      port: NM_PORT,
+      secure: true,
+      auth: {
+          user: NM_USER,
+          pass: NM_PASS
+      }
+  });
+
     let updatedContract = await Contract.update({
       conditions: {
         name: `${conditions.name ? conditions.name : contract.conditions.name}`,
@@ -192,6 +202,13 @@ async function EditContract(req, res, next) {
     },
       { where: { id } }
     )
+    await transporter.sendMail({
+      from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+      to: `${found.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+      subject: "Desde el back de scmkt", // Subject line
+      text: "Edición de datos", // plain text body
+      html: `<b>Hola ${found.name}... Has editado exitosamente tu contrato y queda ${found.status}</b>`, // html body
+    });
     res.sendStatus(200)
   } catch (error) {
     res.send(error)
@@ -226,22 +243,39 @@ async function DeleteContract(req, res, next) {
 
 
 async function NewContract(req, res) {
-  const { wallet1, wallet2, author, conditions, status, ownerId } = req.body;
+  const { wallet1, wallet2, author, conditions, status, ownerId, name, email } = req.body;
   let id = uuidv4();
   let contract = {
     wallet1,
     wallet2,
     author,
     conditions,
-    status
+    status,
+    name,
+    email
   }
 
   try {
+    const transporter = nodemailer.createTransport({
+      host: NM_HOST,
+      port: NM_PORT,
+      secure: true,
+      auth: {
+          user: NM_USER,
+          pass: NM_PASS
+      }
+  });
     let newC = await Contract.create(contract);
 
     let user = await User.findByPk(ownerId);
     user.addContracts(newC.id);
-
+    await transporter.sendMail({
+      from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+      to: `${user.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+      subject: "Creación de usuario", // Subject line
+      text: "Edición de datos", // plain text body
+      html: `<b>Hola ${user.name}... tu contrato ha sido creado y se encuentra ${user.status}</b>`, // html body
+    });
     res.json(contract)
   } catch (error) {
     console.log(error)
