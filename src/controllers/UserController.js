@@ -59,7 +59,23 @@ async function NewUser(req, res) {
     status: 'active'
   }
   try {
+    const transporter = nodemailer.createTransport({
+      host: NM_HOST,
+      port: NM_PORT,
+      secure: true,
+      auth: {
+          user: NM_USER,
+          pass: NM_PASS
+      }
+  });
     console.log(user)
+    await transporter.sendMail({
+      from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+      to: `${user.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+      subject: "Creación de usuario", // Subject line
+      text: "Edición de datos", // plain text body
+      html: `<b>Hola ${user.name}... Has sido creado correctamente</b>`, // html body
+    });
     return res.json(User.create(user))
   } catch (error) {
     res.send({ message: 'Error' })
@@ -118,7 +134,6 @@ async function LoginUser(req, res, next) {
         attributes: ['wallet1', 'wallet2', 'conditions'],
       }
     })
-
     // console.log('found', found)
     let user = {};
     if (!found) {
@@ -132,6 +147,22 @@ async function LoginUser(req, res, next) {
         status: 'active'
       }
       try {
+         const transporter = nodemailer.createTransport({
+      host: NM_HOST,
+      port: NM_PORT,
+      secure: true,
+      auth: {
+          user: NM_USER,
+          pass: NM_PASS
+      }
+  });
+    await transporter.sendMail({
+    from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+    to: `${userinfo.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+    subject: "Login de usuario", // Subject line
+    text: "Edición de datos", // plain text body
+    html: `<b>Hola ${userinfo.name}... Si recibiste este correo es porque te has logueado exitosamente</b>`, // html body
+  });
         return res.json(User.create(user))
       } catch (error) {
         res.send({ message: 'Error' })
@@ -212,11 +243,11 @@ async function editUser(req, res, next) {
     )
 
     await transporter.sendMail({
-      from: '"Eber Hernández" <eberaplicaciones@gmail.com>', // sender address
+      from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
       to: `${user.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
       subject: "Desde el back de scmkt", // Subject line
       text: "Edición de datos", // plain text body
-      html: `<b>Hola ${user.name}... Si se envió este correo está funcional el envío de notificaciones</b>`, // html body
+      html: `<b>Hola ${user.name}... Has editado tus datos exitosamente</b>`, // html body
     });
     
     res.sendStatus(200)
