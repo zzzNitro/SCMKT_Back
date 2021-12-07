@@ -5,6 +5,9 @@ const { Op } = require('sequelize');
 const e = require('express');
 const { condition } = require('sequelize');
 const contract = require('../models/contract');
+const { NM_HOST, NM_PORT, NM_USER, NM_PASS } = process.env;
+const nodemailer = require("nodemailer");
+
 
 
 async function GetContracts(req, res, next) {
