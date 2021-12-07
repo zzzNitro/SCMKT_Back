@@ -55,6 +55,8 @@ async function GetContracts(req, res, next) {
       let myContracts = await User.findByPk(ownerId, { include: [Contract] })
       let contractIds = myContracts.Contracts.map((el) => el.id )
       contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0 )
+    } else {
+      contracts = contracts.filter(contract => contract.status === 'demo')
     }
     //#endownerId
 
