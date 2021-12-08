@@ -271,14 +271,15 @@ async function NewContract(req, res) {
 
     let user = await User.findByPk(ownerId);
     user.addContracts(newC.id);
-    await transporter.sendMail({
-      from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
-      to: `${user.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
-      subject: "Creación de usuario", // Subject line
-      text: "Edición de datos", // plain text body
-      html: `<b>Hola ${user.name}... tu contrato ha sido creado y se encuentra ${user.status}</b>`, // html body
-    });
-    res.json(contract)
+    // await transporter.sendMail({
+    //   from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+    //   to: `${user.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+    //   subject: "Creación de usuario", // Subject line
+    //   text: "Edición de datos", // plain text body
+    //   html: `<b>Hola ${user.name}... tu contrato ha sido creado y se encuentra ${user.status}</b>`, // html body
+    // });
+    console.log('Nuevo contrato', newC)
+    res.json(newC)
   } catch (error) {
     console.log(error)
     return res.send({ message: 'An error occurred in the creation of the contract. Please try again ', status: 500 })
