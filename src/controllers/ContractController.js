@@ -19,7 +19,6 @@ async function GetContracts(req, res, next) {
 
     //#region name
     if (name && name !== "") {
-      // console.log(`Entro al if con name = ${name}`)
       contracts = await Contract.findAll({
         where: {
           conditions: {
@@ -53,8 +52,9 @@ async function GetContracts(req, res, next) {
     //#ownerId
     if (ownerId && ownerId !== "") {
       let myContracts = await User.findByPk(ownerId, { include: [Contract] })
-      let contractIds = myContracts.Contracts.map((el) => el.id )
-      contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0 )
+      let contractIds = myContracts.Contracts.map((el) => el.id)
+      contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0)
+      contracts = contracts.filter(el => el.status != "deleted")
     } else {
       contracts = contracts.filter(contract => contract.status === 'demo')
     }
@@ -180,10 +180,10 @@ async function EditContract(req, res, next) {
       port: NM_PORT,
       secure: true,
       auth: {
-          user: NM_USER,
-          pass: NM_PASS
+        user: NM_USER,
+        pass: NM_PASS
       }
-  });
+    });
 
     let updatedContract = await Contract.update({
       conditions: {
@@ -219,10 +219,10 @@ async function EditContract(req, res, next) {
 
 async function DeleteContract(req, res, next) {
   const id = req.params.id;
+  const ids = req.body.contract;
 
   try {
     if (!id) {
-      const ids = req.body.contract;
       await Contract.update(
         { status: "deleted" },
         {
@@ -237,12 +237,13 @@ async function DeleteContract(req, res, next) {
         { where: { id } }
       )
     }
+    
     return res.sendStatus(200)
   } catch (error) {
+    console.log(error)
     res.send(error)
   }
 }
-
 
 async function NewContract(req, res) {
   const { wallet1, wallet2, author, conditions, status, ownerId, name, email } = req.body;
@@ -263,10 +264,10 @@ async function NewContract(req, res) {
       port: NM_PORT,
       secure: true,
       auth: {
-          user: NM_USER,
-          pass: NM_PASS
+        user: NM_USER,
+        pass: NM_PASS
       }
-  });
+    });
     let newC = await Contract.create(contract);
 
     let user = await User.findByPk(ownerId);
@@ -278,7 +279,7 @@ async function NewContract(req, res) {
     //   text: "Edición de datos", // plain text body
     //   html: `<b>Hola ${user.name}... tu contrato ha sido creado y se encuentra ${user.status}</b>`, // html body
     // });
-    console.log('Nuevo contrato', newC)
+    
     res.json(newC)
   } catch (error) {
     console.log(error)

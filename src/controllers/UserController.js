@@ -179,7 +179,7 @@ async function LoginUser(req, res, next) {
         wallet: found.dataValues.wallet,
         image: found.dataValues.image,
         status: found.dataValues.status,
-        contracts: found.dataValues.Contracts
+        contracts: found.dataValues.Contracts.filter(el => el.status != "deleted" )
       }
     }
 
