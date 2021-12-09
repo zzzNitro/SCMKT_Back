@@ -131,7 +131,7 @@ async function LoginUser(req, res, next) {
       where: { email: userinfo.email },
       include: {
         model: Contract,
-        attributes: ['wallet1', 'wallet2', 'conditions'],
+        attributes: ['id', 'wallet1', 'wallet2', 'author', 'conditions', 'status'],
       }
     })
     // console.log('found', found)
