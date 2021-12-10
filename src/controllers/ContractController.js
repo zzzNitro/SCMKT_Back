@@ -8,7 +8,15 @@ const contract = require('../models/contract');
 const { NM_HOST, NM_PORT, NM_USER, NM_PASS } = process.env;
 const nodemailer = require("nodemailer");
 
-
+const transporter = nodemailer.createTransport({
+  host: NM_HOST,
+  port: NM_PORT,
+  secure: true,
+  auth: {
+    user: NM_USER,
+    pass: NM_PASS
+  }
+});
 
 async function GetContracts(req, res, next) {
   try {
@@ -237,7 +245,7 @@ async function DeleteContract(req, res, next) {
         { where: { id } }
       )
     }
-    
+
     return res.sendStatus(200)
   } catch (error) {
     console.log(error)
@@ -259,27 +267,24 @@ async function NewContract(req, res) {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: NM_HOST,
-      port: NM_PORT,
-      secure: true,
-      auth: {
-        user: NM_USER,
-        pass: NM_PASS
-      }
-    });
+
     let newC = await Contract.create(contract);
 
     let user = await User.findByPk(ownerId);
     user.addContracts(newC.id);
-    // await transporter.sendMail({
-    //   from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
-    //   to: `${user.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
-    //   subject: "Creación de usuario", // Subject line
-    //   text: "Edición de datos", // plain text body
-    //   html: `<b>Hola ${user.name}... tu contrato ha sido creado y se encuentra ${user.status}</b>`, // html body
-    // });
-    
+
+    if (!NM_HOST) {
+      console.log('Faltan Parámetros')
+    } else {
+      await transporter.sendMail({
+        from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+        to: `${user.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+        subject: "Creación de Contrato", // Subject line
+        text: "Edición de datos", // plain text body
+        html: `<b>Hola ${user.name}... tu contrato ${conditions.name} ha sido creado y se encuentra ${status}</b>`, // html body
+      });
+    }
+
     res.json(newC)
   } catch (error) {
     console.log(error)
