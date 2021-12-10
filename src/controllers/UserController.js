@@ -85,6 +85,13 @@ async function NewUser(req, res) {
 async function GetUsers(req, res, next) {
   try {
     let found = await User.findAll({
+      // where: {
+      //   conditions: {
+      //     name: {
+      //       [Op.iLike]: `active`
+      //     }
+      //   }
+      // },
       include: {
         model: Contract,
         attributes: ['wallet1', 'wallet2', 'conditions'],
@@ -96,7 +103,9 @@ async function GetUsers(req, res, next) {
         id: el.id,
         name: el.name, //.charAt(0).toUpperCase() + el.name.slice(1),
         last_name: el.last_name,
-        username: el.username
+        username: el.username,
+        email: el.email,
+        image: el.image
       }
       return obj;
     })
