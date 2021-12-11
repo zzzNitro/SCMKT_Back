@@ -130,13 +130,6 @@ async function LoginUser(req, res, next) {
     const response = await axios.get('https://dev-a8q5pol6.us.auth0.com/userinfo', {
       headers: {
         authorization: `Bearer ${accessToken}`
-      },
-      data: {
-        options:{
-          upstream_params: {
-            prompt: 'consent'
-          }
-        }
       }
     });
     const userinfo = response.data;
