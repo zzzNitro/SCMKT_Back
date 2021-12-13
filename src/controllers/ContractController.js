@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 
 async function GetContracts(req, res, next) {
   try {
-    let { name, author, ownerId, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
+    let { name, author, ownerId, typeC, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
     let contracts = []
     // page = page ? page : 1
     // const contractsOnPage = 12
@@ -35,10 +35,13 @@ async function GetContracts(req, res, next) {
             }
           }
         },
-        //include: User.name
+        include: {
+          model: User,
+          attributes: ['id', 'image'],
+        }
       })
     } else {
-      contracts = await Contract.findAll(/*{ include: User.name }*/)
+      contracts = await Contract.findAll({ include: { model: User, attributes: ['id', 'image'] } })
     }
     //#endregion
 
@@ -61,8 +64,13 @@ async function GetContracts(req, res, next) {
     if (ownerId && ownerId !== "") {
       let myContracts = await User.findByPk(ownerId, { include: [Contract] })
       let contractIds = myContracts.Contracts.map((el) => el.id)
-      contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0)
-      contracts = contracts.filter(el => el.status != "deleted")
+      if (typeC === 'all') {
+        // Se visualizan todos los contratos publicados
+        contracts = contracts.filter(el => el.status === "published" || el.status === "taken")
+      } else {
+        contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0)
+        contracts = contracts.filter(el => el.status != "deleted")
+      }
     } else {
       contracts = contracts.filter(contract => contract.status === 'demo')
     }
