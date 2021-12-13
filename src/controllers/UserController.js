@@ -86,10 +86,8 @@ async function GetUsers(req, res, next) {
   try {
     let found = await User.findAll({
       // where: {
-      //   conditions: {
-      //     name: {
-      //       [Op.iLike]: `active`
-      //     }
+      //   status: {
+      //     [Op.eq]: "active"
       //   }
       // },
       include: {
@@ -105,7 +103,8 @@ async function GetUsers(req, res, next) {
         last_name: el.last_name,
         username: el.username,
         email: el.email,
-        image: el.image
+        image: el.image,
+        status: el .status
       }
       return obj;
     })
@@ -133,8 +132,6 @@ async function LoginUser(req, res, next) {
       }
     });
     const userinfo = response.data;
-
-    console.log('userinfo', userinfo);
 
     let found = await User.findOne({
       where: { email: userinfo.email },
@@ -174,7 +171,7 @@ async function LoginUser(req, res, next) {
   });
         return res.json(User.create(user))
       } catch (error) {
-        res.send({ message: 'Error' })
+        res.next({ message: error })
       }
     } else {
       // console.log('found.dataValues', found.dataValues)
