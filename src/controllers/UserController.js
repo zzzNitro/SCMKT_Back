@@ -8,7 +8,7 @@ const cors = require('cors');
 const sgMail = require('../services/sendgrid');
 const { NM_HOST, NM_PORT, NM_USER, NM_PASS } = process.env;
 const nodemailer = require("nodemailer");
-console.log('Enviando emails')
+const { formatContracts } = require('./formatContracts')
 
 async function main() {
   // Generate test SMTP service account from ethereal.email
@@ -283,7 +283,7 @@ async function getUserById(req, res, next) {
       country: found.country,
       wallet: found.wallet,
       image: found.image,
-      contract: found.Contracts,
+      contract: formatContracts(found.Contracts),
       status: found.status
     }
 
