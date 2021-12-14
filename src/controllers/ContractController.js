@@ -7,6 +7,7 @@ const { condition } = require('sequelize');
 const contract = require('../models/contract');
 const { NM_HOST, NM_PORT, NM_USER, NM_PASS } = process.env;
 const nodemailer = require("nodemailer");
+const { formatContracts } = require('./formatContracts')
 
 const transporter = nodemailer.createTransport({
   host: NM_HOST,
@@ -37,12 +38,19 @@ async function GetContracts(req, res, next) {
         },
         include: {
           model: User,
-          attributes: ['id', 'image'],
+          //attributes: ['id', 'image'],
         }
       })
     } else {
-      contracts = await Contract.findAll({ include: { model: User, attributes: ['id', 'image'] } })
+      contracts = await Contract.findAll({
+        include: {
+          model: User,
+          //  attributes: ['id', 'image']
+        }
+      })
     }
+    contracts = formatContracts(contracts)
+
     //#endregion
 
     //#region author
@@ -151,16 +159,9 @@ async function GetContractById(req, res, next) {
   try {
     let found = await Contract.findByPk(id, { include: [User] })
 
-    let contract = {
-      id: found.id,
-      wallet1: found.wallet1,
-      wallet2: found.wallet2,
-      author: found.author,
-      conditions: found.conditions,
-      status: found.status
-    }
+    contracts = formatContracts(found)
 
-    return res.json(contract);
+    return res.json(contracts);
   } catch (error) {
     return next({ message: error })
   }
