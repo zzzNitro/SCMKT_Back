@@ -67,7 +67,7 @@ async function GetContracts(req, res, next) {
     //   contracts = await Contract.findAll(/*{ include: User.name }*/)
     // }
     //#endregion
-
+    //hola
     //#ownerId
     if (ownerId && ownerId !== "") {
       let myContracts = await User.findByPk(ownerId, { include: [Contract] })
