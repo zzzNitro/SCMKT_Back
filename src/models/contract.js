@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    clientID: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   },
   { timestamps: false }
   );

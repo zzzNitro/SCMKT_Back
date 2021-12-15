@@ -171,7 +171,6 @@ async function EditContract(req, res, next) {
   const id = req.params.id;
   const { conditions, status, name, email } = req.body;
 
-
   try {
     let found = await Contract.findByPk(id)
     let contract = {
@@ -189,7 +188,8 @@ async function EditContract(req, res, next) {
           c1: found.conditions.condition.c2 || "not defined"
         }
       },
-      status: found.status || "unpublished"
+      status: found.status || "unpublished",
+      clientId: found.clientId || ""
     }
 
     const transporter = nodemailer.createTransport({
@@ -231,6 +231,42 @@ async function EditContract(req, res, next) {
     res.sendStatus(200)
   } catch (error) {
     res.send(error)
+  }
+};
+
+async function EditStatusContract(req, res, next) {
+  const id = req.params.id;
+  const { status, clientId } = req.body;
+
+  try {
+    let found = await Contract.findByPk(id)
+    const transporter = nodemailer.createTransport({
+      host: NM_HOST,
+      port: NM_PORT,
+      secure: true,
+      auth: {
+        user: NM_USER,
+        pass: NM_PASS
+      }
+    });
+
+    let updatedContract = await Contract.update({
+      status: status,
+      clientId: clientId
+    },
+      { where: { id } }
+    )
+
+    await transporter.sendMail({
+      from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+      to: `${found.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+      subject: `Actualización estado de Contrato ${found.name}`, // Subject line
+      text: "Edición de datos", // plain text body
+      html: `<b>Hola </br>El estado del contrato ${found.name} se ha modificado satisfactoriamente a ${found.status}</b>`, // html body
+    });
+    res.sendStatus(200)
+  } catch (error) {
+    next(error)
   }
 };
 
@@ -305,6 +341,7 @@ module.exports = {
   GetContracts,
   GetContractById,
   EditContract,
+  EditStatusContract,
   DeleteContract,
   NewContract
 };

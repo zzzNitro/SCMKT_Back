@@ -23,6 +23,7 @@ const formatContracts = (contracts) => {
           }
         },
         status: element.status,
+        clientId: element.clientId,
         owner: {
           //id: element.Users[0].id,
           name: element.Users[0].name_show ? element.Users[0].name : '',
@@ -56,6 +57,7 @@ const formatContracts = (contracts) => {
         }
       },
       status: contracts.status,
+      clientId: contracts.clientId,
       owner: {
         //id: contracts.Users[0].id,
         name: contracts.Users[0].name_show ? contracts.Users[0].name : '',

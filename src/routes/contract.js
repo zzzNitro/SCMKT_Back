@@ -4,6 +4,7 @@ const {
     GetContracts,
     GetContractById,
     EditContract,
+    EditStatusContract,
     DeleteContract,
     NewContract
 } = require('../controllers/ContractController');
@@ -13,6 +14,7 @@ const {
 router.get('/', GetContracts);
 router.get('/:id', GetContractById);
 router.put('/edit/:id', EditContract);
+router.put('/edit/status/:id', EditStatusContract);
 router.put('/delete/:id', DeleteContract);
 router.put('/delete', DeleteContract);
 router.put('/new', NewContract)
