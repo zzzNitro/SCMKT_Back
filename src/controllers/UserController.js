@@ -16,15 +16,15 @@ async function main() {
   let testAccount = await nodemailer.createTestAccount();
 
 
-const transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     host: NM_HOST,
     port: NM_PORT,
     secure: true,
     auth: {
-        user: NM_USER,
-        pass: NM_PASS
+      user: NM_USER,
+      pass: NM_PASS
     }
-});
+  });
 
 }
 
@@ -64,10 +64,10 @@ async function NewUser(req, res) {
       port: NM_PORT,
       secure: true,
       auth: {
-          user: NM_USER,
-          pass: NM_PASS
+        user: NM_USER,
+        pass: NM_PASS
       }
-  });
+    });
     console.log(user)
     await transporter.sendMail({
       from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
@@ -104,7 +104,7 @@ async function GetUsers(req, res, next) {
         username: el.username,
         email: el.email,
         image: el.image,
-        status: el .status
+        status: el.status
       }
       return obj;
     })
@@ -137,7 +137,7 @@ async function LoginUser(req, res, next) {
       where: { email: userinfo.email },
       include: {
         model: Contract,
-        attributes: ['id', 'wallet1', 'wallet2', 'author', 'conditions', 'status'],
+        // attributes: ['id', 'wallet1', 'wallet2', 'author', 'conditions', 'status', 'clientId', 'owner'],
       }
     })
     // console.log('found', found)
@@ -153,28 +153,40 @@ async function LoginUser(req, res, next) {
         status: 'active'
       }
       try {
-         const transporter = nodemailer.createTransport({
-      host: NM_HOST,
-      port: NM_PORT,
-      secure: true,
-      auth: {
-          user: NM_USER,
-          pass: NM_PASS
-      }
-  });
-    await transporter.sendMail({
-    from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
-    to: `${userinfo.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
-    subject: "Login de usuario", // Subject line
-    text: "Edición de datos", // plain text body
-    html: `<b>Hola ${userinfo.name}... Si recibiste este correo es porque te has logueado exitosamente</b>`, // html body
-  });
+        const transporter = nodemailer.createTransport({
+          host: NM_HOST,
+          port: NM_PORT,
+          secure: true,
+          auth: {
+            user: NM_USER,
+            pass: NM_PASS
+          }
+        });
+        await transporter.sendMail({
+          from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+          to: `${userinfo.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+          subject: "Login de usuario", // Subject line
+          text: "Edición de datos", // plain text body
+          html: `<b>Hola ${userinfo.name}... Si recibiste este correo es porque te has logueado exitosamente</b>`, // html body
+        });
         return res.json(User.create(user))
       } catch (error) {
         res.next({ message: error })
       }
     } else {
       // console.log('found.dataValues', found.dataValues)
+      let contracts = await Contract.findAll({
+        include: {
+          model: User,
+          //  attributes: ['id', 'image']
+        }
+      })
+
+      contracts = formatContracts(contracts)
+      let contractIds = found.Contracts.map((el) => el.id)
+      contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0)
+      contracts = contracts.filter(el => el.status != "deleted")
+
       user = {
         id: found.dataValues.id,
         name: found.dataValues.name,//.charAt(0).toUpperCase() + found.dataValues.name.slice(1),
@@ -185,7 +197,7 @@ async function LoginUser(req, res, next) {
         wallet: found.dataValues.wallet,
         image: found.dataValues.image,
         status: found.dataValues.status,
-        contracts: found.dataValues.Contracts.filter(el => el.status != "deleted" )
+        contracts: contracts
       }
     }
 
@@ -231,10 +243,10 @@ async function editUser(req, res, next) {
       port: NM_PORT,
       secure: true,
       auth: {
-          user: NM_USER,
-          pass: NM_PASS
+        user: NM_USER,
+        pass: NM_PASS
       }
-  });
+    });
 
     let updatedUser = await User.update({
       name: `${name !== '' ? name : user.name}`,
@@ -255,10 +267,10 @@ async function editUser(req, res, next) {
       text: "Edición de datos", // plain text body
       html: `<b>Hola ${user.name}... Has editado tus datos exitosamente</b>`, // html body
     });
-    
+
     res.sendStatus(200)
 
-    
+
 
   } catch (error) {
     res.send(error)
@@ -299,11 +311,11 @@ async function getUserByEmail(req, res, next) {
   try {
     let found = await User.findOne({
       where: {
-          email: {
-              [Op.iLike]: `%${email}%`
-            }
-          }
-        })
+        email: {
+          [Op.iLike]: `%${email}%`
+        }
+      }
+    })
 
     return res.send(found.id);
   } catch (error) {
@@ -333,7 +345,7 @@ async function sendMail(req, res) {
     return res.status(err.code).send(err.message)
   }
 
-  res.status(201).send({success: true})
+  res.status(201).send({ success: true })
 }
 
 module.exports = {
