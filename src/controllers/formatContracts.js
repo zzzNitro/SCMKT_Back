@@ -7,7 +7,7 @@ const formatContracts = (contracts) => {
     contractsFormat = contracts?.map(element => {
       console.log('element.Users', element)
       let obj = {
-        id: element.id,
+        //id: element.id,
         wallet1: element.wallet1,
         wallet2: element.wallet2,
         author: element.author,
@@ -24,7 +24,7 @@ const formatContracts = (contracts) => {
         },
         status: element.status,
         owner: {
-          id: element.Users[0].id,
+          //id: element.Users[0].id,
           name: element.Users[0].name_show ? element.Users[0].name : '',
           last_name: element.Users[0].name_show ? element.Users[0].last_name : '',
           email: element.Users[0].email_show ? element.Users[0].email : '',
@@ -40,7 +40,7 @@ const formatContracts = (contracts) => {
     })
   } else {
     contractsFormat = {
-      id: contracts.id,
+      //id: contracts.id,
       wallet1: contracts.wallet1,
       wallet2: contracts.wallet2,
       author: contracts.author,
@@ -57,7 +57,7 @@ const formatContracts = (contracts) => {
       },
       status: contracts.status,
       owner: {
-        id: contracts.Users[0].id,
+        //id: contracts.Users[0].id,
         name: contracts.Users[0].name_show ? contracts.Users[0].name : '',
         last_name: contracts.Users[0].name_show ? contracts.Users[0].last_name : '',
         email: contracts.Users[0].email_show ? contracts.Users[0].email : '',
