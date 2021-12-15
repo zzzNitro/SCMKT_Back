@@ -158,8 +158,7 @@ async function GetContractById(req, res, next) {
 
   try {
     let found = await Contract.findByPk(id, { include: [User] })
-
-    contracts = formatContracts(found)
+    let contracts = formatContracts(found)
 
     return res.json(contracts);
   } catch (error) {

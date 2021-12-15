@@ -4,8 +4,8 @@ const formatContracts = (contracts) => {
   let contractsFormat
 
   if (Array.isArray(contracts)) {
+    console.log('RECIBO', contracts)
     contractsFormat = contracts?.map(element => {
-      console.log('element.Users', element)
       let obj = {
         //id: element.id,
         wallet1: element.wallet1,
@@ -40,6 +40,7 @@ const formatContracts = (contracts) => {
       return obj
     })
   } else {
+    console.log('RECIBO 2222222222222', contracts)
     contractsFormat = {
       //id: contracts.id,
       wallet1: contracts.wallet1,
