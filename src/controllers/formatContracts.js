@@ -4,10 +4,9 @@ const formatContracts = (contracts) => {
   let contractsFormat
 
   if (Array.isArray(contracts)) {
-    console.log('RECIBO', contracts)
     contractsFormat = contracts?.map(element => {
       let obj = {
-        //id: element.id,
+        id: element.id,
         wallet1: element.wallet1,
         wallet2: element.wallet2,
         author: element.author,
@@ -25,7 +24,7 @@ const formatContracts = (contracts) => {
         status: element.status,
         clientId: element.clientId,
         owner: {
-          //id: element.Users[0].id,
+          id: element.Users[0].id,
           name: element.Users[0].name_show ? element.Users[0].name : '',
           last_name: element.Users[0].name_show ? element.Users[0].last_name : '',
           email: element.Users[0].email_show ? element.Users[0].email : '',
@@ -40,9 +39,8 @@ const formatContracts = (contracts) => {
       return obj
     })
   } else {
-    console.log('RECIBO 2222222222222', contracts)
     contractsFormat = {
-      //id: contracts.id,
+      id: contracts.id,
       wallet1: contracts.wallet1,
       wallet2: contracts.wallet2,
       author: contracts.author,
@@ -60,7 +58,7 @@ const formatContracts = (contracts) => {
       status: contracts.status,
       clientId: contracts.clientId,
       owner: {
-        //id: contracts.Users[0].id,
+        id: contracts.Users[0].id,
         name: contracts.Users[0].name_show ? contracts.Users[0].name : '',
         last_name: contracts.Users[0].name_show ? contracts.Users[0].last_name : '',
         email: contracts.Users[0].email_show ? contracts.Users[0].email : '',
