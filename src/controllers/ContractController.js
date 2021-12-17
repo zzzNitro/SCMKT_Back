@@ -174,21 +174,21 @@ async function EditContract(req, res, next) {
     let found = await Contract.findByPk(id)
     let contract = {
       conditions: {
-        name: found.conditions.name || "not defined",
-        type: found.conditions.type || "not defined",
-        duration: found.conditions.duration || "not defined",
-        category: found.conditions.category || "not defined",
-        shortdescription: found.conditions.shortdescription || "not defined",
-        longdescription: found.conditions.longdescription || "not defined",
-        amount: found.conditions.amount || "not defined",
-        coin: found.conditions.amount || "not defined",
+        name: found.conditions.name,
+        type: found.conditions.type,
+        duration: found.conditions.duration,
+        category: found.conditions.category,
+        shortdescription: found.conditions.shortdescription,
+        longdescription: found.conditions.longdescription,
+        amount: found.conditions.amount,
+        coin: found.conditions.amount,
         condition: {
-          c1: found.conditions.condition.c1 || "not defined",
-          c1: found.conditions.condition.c2 || "not defined"
+          c1: found.conditions.condition.c1,
+          c1: found.conditions.condition.c2
         }
       },
-      status: found.status || "unpublished",
-      clientId: found.clientId || ""
+      status: found.status,
+      clientId: found.clientId
     }
 
     const transporter = nodemailer.createTransport({
@@ -220,12 +220,13 @@ async function EditContract(req, res, next) {
     },
       { where: { id } }
     )
+
     await transporter.sendMail({
       from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
       to: `${found.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
       subject: "Desde el back de scmkt", // Subject line
-      text: "Edición de datos", // plain text body
-      html: `<b>Hola ${found.name}... Has editado exitosamente tu contrato y queda ${found.status}</b>`, // html body
+      text: `Edición del contrato ${conditions.name}`, // plain text body
+      html: `<b>Hola ${found.name}... La actualización del contrato se ha realizado en forma satisfactoria</b>`, // html body
     });
     res.sendStatus(200)
   } catch (error) {
