@@ -50,7 +50,6 @@ async function GetContracts(req, res, next) {
       })
     }
     contracts = formatContracts(contracts)
-
     //#endregion
 
     //#region author
@@ -70,12 +69,12 @@ async function GetContracts(req, res, next) {
     
     //#ownerId
     if (ownerId && ownerId !== "") {
-      let myContracts = await User.findByPk(ownerId, { include: [Contract] })
-      let contractIds = myContracts.Contracts.map((el) => el.id)
       if (typeC === 'all') {
         // Se visualizan todos los contratos publicados
         contracts = contracts.filter(el => el.status === "published" || el.status === "taken")
       } else {
+        let myContracts = await User.findByPk(ownerId, { include: [Contract] })
+        let contractIds = myContracts.Contracts.map((el) => el.id)
         contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0)
         contracts = contracts.filter(el => el.status != "deleted")
       }
