@@ -69,6 +69,7 @@ async function GetContracts(req, res, next) {
     
     //#ownerId
     if (ownerId && ownerId !== "") {
+      // console.log(`Entro al if con owner = ${ownerId}`)
       if (typeC === 'all') {
         // Se visualizan todos los contratos publicados
         contracts = contracts.filter(el => el.status === "published" || el.status === "taken")
@@ -92,7 +93,7 @@ async function GetContracts(req, res, next) {
 
     //#region category
     if (filterCategory && filterCategory !== "") {
-      // console.log(`Entro al if con category = ${filterCategory}`)
+      // console.log(`Entro al if con category = ${filterCategory}`, contracts)
       contracts = contracts.filter(contract => contract.conditions.category === filterCategory)
     }
     //#endregion
@@ -311,7 +312,6 @@ async function NewContract(req, res) {
   }
 
   try {
-
     let newC = await Contract.create(contract);
 
     let user = await User.findByPk(ownerId);
