@@ -12,6 +12,9 @@ const formatContracts = (contracts) => {
         author: element.author,
         conditions: {
           name: element.conditions.name,
+          type: element.conditions.type,
+          duration: element.conditions.duration,
+          category: element.conditions.category,
           shortdescription: element.conditions.shortdescription,
           longdescription: element.conditions.longdescription,
           amount: element.conditions.amount,
@@ -24,15 +27,15 @@ const formatContracts = (contracts) => {
         status: element.status,
         clientId: element.clientId,
         owner: {
-          id: element.Users[0].id,
-          name: element.Users[0].name_show ? element.Users[0].name : '',
-          last_name: element.Users[0].name_show ? element.Users[0].last_name : '',
-          email: element.Users[0].email_show ? element.Users[0].email : '',
-          birthday: element.Users[0].birthday_show ? element.Users[0].birthday : '',
-          country: element.Users[0].country_show ? element.Users[0].country : '',
-          wallet: element.Users[0].wallet,
-          image: element.Users[0].image,
-          status: element.Users[0].status
+          id: element.Users[0]?.id,
+          name: element.Users[0]?.name_show ? element.Users[0]?.name : '',
+          last_name: element.Users[0]?.name_show ? element.Users[0]?.last_name : '',
+          email: element.Users[0]?.email_show ? element.Users[0]?.email : '',
+          birthday: element.Users[0]?.birthday_show ? element.Users[0]?.birthday : '',
+          country: element.Users[0]?.country_show ? element.Users[0]?.country : '',
+          wallet: element.Users[0]?.wallet,
+          image: element.Users[0]?.image,
+          status: element.Users[0]?.status
         }
       }
 
@@ -46,6 +49,9 @@ const formatContracts = (contracts) => {
       author: contracts.author,
       conditions: {
         name: contracts.conditions.name,
+        type: contracts.conditions.type,
+        duration: contracts.conditions.duration,
+        category: contracts.conditions.category,
         shortdescription: contracts.conditions.shortdescription,
         longdescription: contracts.conditions.longdescription,
         amount: contracts.conditions.amount,
@@ -70,7 +76,6 @@ const formatContracts = (contracts) => {
       }
     }
   }
-
   return contractsFormat
 }
 
