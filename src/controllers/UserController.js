@@ -286,6 +286,17 @@ async function getUserById(req, res, next) {
   try {
     let found = await User.findByPk(id, { include: [Contract] })
 
+    let contracts = await Contract.findAll({
+      include: {
+        model: User,
+      }
+    })
+
+    contracts = formatContracts(contracts)
+    let contractIds = found.Contracts.map((el) => el.id)
+    contracts = contracts.filter(el => contractIds.indexOf(el.id) >= 0)
+    contracts = contracts.filter(el => el.status != "deleted")
+
     let user = {
       id: found.id,
       name: found.name, //.charAt(0).toUpperCase() + found.name.slice(1),
@@ -295,10 +306,10 @@ async function getUserById(req, res, next) {
       country: found.country,
       wallet: found.wallet,
       image: found.image,
-      contract: formatContracts(found.Contracts),
+      contract: contracts,
       status: found.status
     }
-
+    
     return res.json(user);
   } catch (error) {
     return next({ message: error })
