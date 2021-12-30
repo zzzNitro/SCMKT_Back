@@ -19,6 +19,7 @@ const formatContracts = (contracts) => {
           longdescription: element.conditions.longdescription,
           amount: element.conditions.amount,
           coin: element.conditions.coin,
+          instructions: element.conditions.instructions,
           condition: {
             c1: element.conditions.condition.c1,
             c2: element.conditions.condition.c2
@@ -56,6 +57,7 @@ const formatContracts = (contracts) => {
         longdescription: contracts.conditions.longdescription,
         amount: contracts.conditions.amount,
         coin: contracts.conditions.coin,
+        instructions: contracts.conditions.instructions,
         condition: {
           c1: contracts.conditions.condition.c1,
           c2: contracts.conditions.condition.c2

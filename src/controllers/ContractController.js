@@ -182,6 +182,7 @@ async function EditContract(req, res, next) {
         longdescription: found.conditions.longdescription,
         amount: found.conditions.amount,
         coin: found.conditions.amount,
+        instructions: found.conditions.instructions,
         condition: {
           c1: found.conditions.condition.c1,
           c1: found.conditions.condition.c2
@@ -211,6 +212,7 @@ async function EditContract(req, res, next) {
         longdescription: `${conditions.longdescription ? conditions.longdescription : contract.conditions.longdescription}`,
         amount: `${conditions.amount ? conditions.amount : contract.conditions.amount}`,
         coin: `${conditions.coin ? conditions.coin : contract.conditions.coin}`,
+        instructions: `${conditions.instructions ? conditions.instructions : contract.conditions.instructions}`,
         condition: {
           c1: `${conditions.condition.c1 ? conditions.condition.c1 : contract.conditions.condition.c1}`,
           c2: `${conditions.condition.c2 ? conditions.condition.c2 : contract.conditions.condition.c2}`
