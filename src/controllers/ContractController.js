@@ -66,7 +66,7 @@ async function GetContracts(req, res, next) {
     //   contracts = await Contract.findAll(/*{ include: User.name }*/)
     // }
     //#endregion
-    
+
     //#ownerId
     if (ownerId && ownerId !== "") {
       // console.log(`Entro al if con owner = ${ownerId}`)
@@ -238,10 +238,18 @@ async function EditContract(req, res, next) {
 
 async function EditStatusContract(req, res, next) {
   const id = req.params.id;
-  const { status, clientId } = req.body;
-
+  const { status, clientId, previous } = req.body;
   try {
-    let found = await Contract.findByPk(id)
+    let found = await Contract.findByPk(id, { include: [User] })
+    let client = ''
+
+    if (status === 'taken') {
+      client = await User.findByPk(clientId)
+    }else{
+      client = await User.findByPk(previous)
+    }
+
+    // console.log('ESTE ES MI ID', id, clientId, found.Users[0]?.email, client.email)
     const transporter = nodemailer.createTransport({
       host: NM_HOST,
       port: NM_PORT,
@@ -259,13 +267,43 @@ async function EditStatusContract(req, res, next) {
       { where: { id } }
     )
 
-    await transporter.sendMail({
-      from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
-      to: `${found.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
-      subject: `Actualización estado de Contrato ${found.name}`, // Subject line
-      text: "Edición de datos", // plain text body
-      html: `<b>Hola </br>El estado del contrato ${found.name} se ha modificado satisfactoriamente a ${found.status}</b>`, // html body
-    });
+    if (clientId) {
+      //Client
+      await transporter.sendMail({
+        from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+        to: `${client.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+        subject: `Actualización estado de Contrato ${found.conditions.name}`, // Subject line
+        text: "Edición de datos", // plain text body
+        html: `<b>Hola ${client.name} </br>Te has suscrito al contrato ${found.conditions.name} en forma exitosa</b>`, // html body
+      });
+
+      //Owner
+      await transporter.sendMail({
+        from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+        to: `${found.Users[0]?.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+        subject: `Actualización estado de Contrato ${found.conditions.name}`, // Subject line
+        text: "Edición de datos", // plain text body
+        html: `<b>Hola </br>El usuario ${client.email_show ? client.email : (client.name_show ? client.name : client.id)} se ha suscrito a tu contrato ${found.conditions.name} </b>`, // html body
+      });
+    }else{
+      //Client
+      await transporter.sendMail({
+        from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+        to: `${client.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+        subject: `Actualización estado de Contrato ${found.conditions.name}`, // Subject line
+        text: "Edición de datos", // plain text body
+        html: `<b>Hola </br>Te has desuscrito del contrato ${found.conditions.name} en forma exitosa</b>`, // html body
+      });
+
+      //Owner
+      await transporter.sendMail({
+        from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
+        to: `${found.Users[0]?.email}, ebershr@gmail.com, garciavahos@gmail.com`, // list of receivers
+        subject: `Actualización estado de Contrato ${found.conditions.name}`, // Subject line
+        text: "Edición de datos", // plain text body
+        html: `<b>Hola </br>Se han desuscrito de tu contrato ${found.conditions.name} </b>`, // html body
+      });
+    }
     res.sendStatus(200)
   } catch (error) {
     next(error)
