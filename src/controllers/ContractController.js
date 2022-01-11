@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
 
 async function GetContracts(req, res, next) {
   try {
-    let { name, author, ownerId, typeC, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
+    let { name, author, ownerId, typeC, filterAmount, filterType, filterCategory, filterDurationH, filterDurationL, filterState } = req.query
     let contracts = []
     // page = page ? page : 1
     // const contractsOnPage = 12
@@ -83,6 +83,18 @@ async function GetContracts(req, res, next) {
       contracts = contracts.filter(contract => contract.status === 'demo')
     }
     //#endownerId
+
+    //#region amount
+    if (filterAmount && filterAmount !== "") {
+      // console.log(`Entro al if con type = ${filterAmount}`)
+      const [down, top] = filterAmount.split('-|-')
+      if (top >= 0) {
+        contracts = contracts.filter(contract => contract.conditions.amount >= down && contract.conditions.amount <= top)
+      }else{
+        contracts = contracts.filter(contract => contract.conditions.amount >= down)
+      }
+    }
+    //#endregion
 
     //#region type
     if (filterType && filterType !== "") {
@@ -245,7 +257,7 @@ async function EditStatusContract(req, res, next) {
 
     if (status === 'taken') {
       client = await User.findByPk(clientId)
-    }else{
+    } else {
       client = await User.findByPk(previous)
     }
 
@@ -285,7 +297,7 @@ async function EditStatusContract(req, res, next) {
         text: "Edición de datos", // plain text body
         html: `<b>Hola </br>El usuario ${client.email_show ? client.email : (client.name_show ? client.name : client.id)} se ha suscrito a tu contrato ${found.conditions.name} </b>`, // html body
       });
-    }else{
+    } else {
       //Client
       await transporter.sendMail({
         from: '"SmartContracts" <eberaplicaciones@gmail.com>', // sender address
